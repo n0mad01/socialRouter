@@ -14,21 +14,27 @@ require(__DIR__ . '/divcontent.php');
 //$content = $html->getHTML();
 $options = '';
 if(isset($this->twitterAccounts)) :
-    $options = array(
+/*    $options = array(
         'twitter'=>$this->twitterAccounts,
-        'shortener'=>$this->shortenerAccounts
-    );
+        'shortener'=>$this->shortenerAccounts,
+        'shorturl'=>$this->referer,
+    );*/
+    
+    $options = new stdClass;
+    $options->shorturl = $this->referer;
+    $options->twitter = $this->twitterAccounts;
+    $options->shortener = $this->shortenerAccounts;
+
 endif;
 $content = Html::getHTML($options);
 
 $cookies = $_COOKIE;
 
-$data = array(
+/*$data = array(
     'content'=>$content,
     'cookies'=>$cookies,
     'shorturl'=>$this->referer
-);
-
+);*/
 //echo $_GET['callback'] . '(' . json_encode($data) . ');';
 ?>
 
@@ -36,7 +42,8 @@ $data = array(
 var socialrouter = (function(){
 
     var theDiv,
-        script;
+        script,
+        content;
 
     var createDiv = function() {
 
@@ -54,15 +61,25 @@ var socialrouter = (function(){
         //theDiv.innerHTML = 'SOCIALROUTERB';
         theDiv.innerHTML = '<?php echo $content; ?>';
         //callJSONP();
+        
+        theURL = document.getElementById('sr_theURL');
+        content = theURL.value;
+        theURL.value = document.title + "\n" + content //document.location.href;
+
+        callListeners();
     }
 
-    var callJSONP = function() {
+    var callListeners = function() {
+        document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
+    }
+
+/*    var callJSONP = function() {
         script = document.createElement('script');
         script.setAttribute('src', JSONPurl);
         document.getElementsByTagName('head')[0].appendChild(script);
-    }
+    }*/
 
-    var parseRequest = function(response) {
+/*    var parseRequest = function(response) {
         // inject the new elements
         theDiv.innerHTML = response.content;
  
@@ -76,8 +93,8 @@ var socialrouter = (function(){
         //otherContent.innerHTML = dump(response.cookies);
 
         // Close button
-        document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
-    }
+        //document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
+    }*/
 
     var removeSR = function() {
         var el = document.getElementById('socialrouterMaindiv');
@@ -86,7 +103,7 @@ var socialrouter = (function(){
 
     return {
         init : createDiv,
-        callback : parseRequest
+        //callback : parseRequest
     }
 }());
 

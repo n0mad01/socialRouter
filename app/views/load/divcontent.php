@@ -27,7 +27,7 @@ class Html extends Load {
         //dumper($data);
         $mail = '';
         if(isset($_SESSION['__sessiondata']['email'])) :
-            $mail = '<span style="font-size:10px;">'; 
+            $mail = '<span style="font-size:10px;">';
                 $mail .= $_SESSION['__sessiondata']['email'];
             $mail .= '<span>';
         endif;
@@ -35,14 +35,14 @@ class Html extends Load {
         $twitterUserForm = '';
         $shortenerForm = '';
         if($data) :
-            if(isset($data['twitter']) && $data['twitter']) :
-                foreach($data['twitter'] as $tw) :
+            if(isset($data->twitter) && $data->twitter) :
+                foreach($data->twitter as $tw) :
                     $twitterUserForm .= '<input type="checkbox" name="postdata[twitterUser][]" value="' . $tw['username'] . '" ><span style="margin-right:3px;">' . $tw['username'] . '</span>';// . '<br />';
                 endforeach;
             endif;
-            if(isset($data['shortener']) && $data['shortener']) :
+            if(isset($data->shortener) && $data->shortener) :
                 $i = 1;
-                foreach($data['shortener'] as $sh) :
+                foreach($data->shortener as $sh) :
                     $shortenerForm .= '<input type="radio" name="postdata[shortener]" value="' . $sh['service'] . '|' . $sh['username'] . '" ' . (($i===1) ? 'checked=checked' : '') . ' ><span style="margin-right:3px;">' . $sh['username'] . ' ' . $sh['service'] . '</span>';
                     $i++;
                 endforeach;
@@ -63,7 +63,9 @@ $mail
 
 <form id="" accept-charset="utf-8" action="http://sr.soluch.at/load/delegateMessage/" method="post">
     $shortenerForm
-    <textarea id="sr_theURL" name="postdata[message]" cols="35" rows="3"></textarea>
+    <textarea id="sr_theURL" name="postdata[message]" cols="35" rows="3">
+$data->shorturl
+</textarea>
     <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
     <a href="http://sr.soluch.at/twitter/add/">add twitter account</a><br />
     $twitterUserForm
@@ -115,7 +117,7 @@ right:5px;
 bottom:5px;
 width:300px;
 padding:5px 14px;
-background-color:#E5EBEE;
+background-color:#F6EECE;
 border:1px solid #B0BFC9;
 -webkit-border-radius:5px;
 -moz-border-radius:5px;
