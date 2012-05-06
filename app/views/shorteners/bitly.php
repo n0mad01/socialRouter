@@ -5,7 +5,7 @@
                 In order to use your bit.ly account please provide your username and API key.<br />
                 (Your API key can be obtained here: <a href="http://bitly.com/a/your_api_key">http://bitly.com/a/your_api_key</a>)
             </p>
-            <form id="shortener_bitly" accept-charset="utf-8" action="/shorteners/bitly" method="post">
+            <form id="shortener_bitly" accept-charset="utf-8" action="/shorteners/add/bitly" method="post">
             	<div class="input">
             		<label for="bitly_username"><?php echo _('bitly Username'); ?>:</label>
             		<input id="bitly_username" type="text" maxlength="30" name="postdata[bitly_username]" 

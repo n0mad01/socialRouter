@@ -1,8 +1,8 @@
 <?php
 
 include('app/classes/controller.php');
+require_once 'HTTP/OAuth/Consumer.php';
 //require_once 'Services/Twitter.php';
-//require_once 'HTTP/OAuth/Consumer.php';
 
 class Shorteners extends Controller {
 
@@ -12,7 +12,7 @@ class Shorteners extends Controller {
  */
     public function allowed() {
 
-        $this->allowed = array('index', 'bitly', 'all', 'shorten', 'remove');
+        $this->allowed = array('index', 'bitly', 'all', 'shorten', 'remove', 'add');
     }
 
 /**
@@ -28,11 +28,11 @@ class Shorteners extends Controller {
 	/**
 	 *	default method
 	 */
-	public function index()
-    {
-	}
+	//public function all()
+    //{
+	//}
 
-	public function all()
+	public function index()
     {
 		if($this->isLoggedIn()) {
 
@@ -73,11 +73,75 @@ class Shorteners extends Controller {
 			dumper($e->getMessage());
 			return FALSE;
 		}
-   		header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/all/');
+   		header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
+    }
+
+    public function add($get)
+    {
+        if(isset($get[0])) {
+            $service = strtolower($get[0]);
+            switch($service) {
+                case 'google' :
+                    //dumper($get[0]);
+                    $this->addGoogle();
+                    break;
+                case 'bitly' :
+                    //$this->render = TRUE;
+                    $this->render(array('controller'=>'shorteners', 'view'=>'bitly'));
+                    return $this->bitly();
+            }
+
+            //if(strtolower($get[0]) === 'google') {
+            //dumper($get[0]);
+            //}
+        }
+    }
+
+    public function addGoogle()
+    {
+/*        $consumer_key = '672624184574.apps.googleusercontent.com';
+        $consumer_secret = 'ZfqvuOBpT7ZS5twp5CI876LS';
+		try {
+            $httpRequest = new HTTP_Request2(
+                null,
+                HTTP_Request2::METHOD_GET,
+                array (
+                    'ssl_verify_peer'   => false,
+                    'ssl_verify_host'   => false
+                )
+            );
+            $httpRequest->setHeader('Accept-Encoding', '.*');
+            $request = new HTTP_OAuth_Consumer_Request;
+            $request->accept($httpRequest);
+
+    		$oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
+            $oauth->accept($request);
+
+			$oauth->getRequestToken('https://www.googleapis.com/oauth2/v1/userinfo');*/
+			//$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener');
+
+            //$_SESSION['token']        = $oauth->getToken();
+            //$_SESSION['token_secret'] = $oauth->getTokenSecret();
+
+            //$authorize_link_twitter = $oauth->getAuthorizeUrl('https://api.twitter.com/oauth/authorize');
+
+/*		$oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
+
+		$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener', 'http://sr2.soluch.at/shorteners/google');
+		} catch (Services_Twitter_Exception $e) {
+			dumper($e->getMessage());
+		}
+        */
+    }
+
+    public function google()
+    {
+
     }
 
 	public function bitly()
     {
+//dumper($this->postdata);
 		if($this->isLoggedIn()) {
 
 		    if(isset($this->postdata)) {
@@ -97,7 +161,7 @@ class Shorteners extends Controller {
                     else {
                         $this->saveBitlyAccount($username, $apikey);
                         // redirect
-    					header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/all/');
+    					header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
 //dumper($this->postdata);
                     }
                 }

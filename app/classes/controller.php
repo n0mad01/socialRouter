@@ -28,6 +28,8 @@ class Controller {
 
     protected $renderDefault = TRUE;
 
+    protected $render = array();  // other view file to render
+
 	public function __construct() {} 
 
     public function __set($name, $value)
@@ -196,16 +198,20 @@ class Controller {
 				/** 
 				 *	load the Classes' views
 				 */
-				{
+/*				{
                     if($this->renderDefault) {
     					include('app/webroot/header.php');
 	    				$this->loadViews($class, $method);
 		    			include('app/webroot/footer.php');
                     }
+                    //elseif($render) {
+//dumper('RENDER');die();
+                    //}
                     else {
 	    				$this->loadViews($class, $method);
                     }
-				}
+				}*/
+   				$this->loadViews($class, $method);
 
 			} else {
 				// Method not found
@@ -217,16 +223,36 @@ class Controller {
 		}
 	}
 
+    protected function render($options) 
+    {
+        $this->render['controller'] = $options['controller'];
+        $this->render['view'] = $options['view'];
+
+    }
+
 	/**
 	 *	Simply load the view files for the given Methods
 	 */
 	private function loadViews($class = NULL, $view = NULL) {
 
+        if(!empty($this->render)) {
+            $class = $this->render['controller'];
+            $view = $this->render['view'];
+        }
+
 		$path = 'app/views/' . $class . '/' . $view . '.php';
 		if(file_exists($path)) {
 
-			require($path);
+            if($this->renderDefault) {
+        		include('app/webroot/header.php');
+			    require($path);
+       			include('app/webroot/footer.php');
+            }
+            else {
+			    require($path);
+            }
 		} else {
+            // TODO file does not exist message
 		}
 	}
 

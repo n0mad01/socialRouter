@@ -43,6 +43,7 @@ var socialrouter = (function(){
 
     var theDiv,
         script,
+        textarea,
         content;
 
     var createDiv = function() {
@@ -62,15 +63,20 @@ var socialrouter = (function(){
         theDiv.innerHTML = '<?php echo $content; ?>';
         //callJSONP();
         
-        theURL = document.getElementById('sr_theURL');
-        content = theURL.value;
-        theURL.value = document.title + "\n" + content //document.location.href;
+        // SET GLOBALS*
+        textarea = document.getElementById('sr_textarea');
+        charCountBox = document.getElementById('sr_charCount');
+        //content = textarea.value;
+
+        textarea.value = document.title + "\n" + textarea.value; //content //document.location.href;
+        charCountSR();
 
         callListeners();
     }
 
     var callListeners = function() {
         document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
+        textarea.onkeyup = charCountSR;
     }
 
 /*    var callJSONP = function() {
@@ -96,9 +102,16 @@ var socialrouter = (function(){
         //document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
     }*/
 
+    var charCountSR = function() {
+        //if(textarea.value.length > 140) {
+            //charCountBox.style.fontSize = 12px;
+        //}
+        charCountBox.innerHTML = textarea.value.length;
+    }
+
     var removeSR = function() {
         var el = document.getElementById('socialrouterMaindiv');
-        var remElement = (el.parentNode).removeChild(el);
+        el.parentNode.removeChild(el);
     }
 
     return {

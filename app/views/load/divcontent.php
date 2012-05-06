@@ -20,6 +20,26 @@ class Html extends Load {
     }
 
     /**
+     *  HTML for not logged in users
+     */
+    private function notLoggendIn($css)
+    {
+        return <<<HTMLSTUFF
+$css
+<a href="http://sr.soluch.at" target="_blank" id="sr_title" class="" >SocialRouter</a>
+<span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.5.2</span>
+<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
+<div id="sr_closeButton" class="sr_topButtons" >close x</div>
+NOT LOGGED IN!
+<div id="otherContent">
+</div>
+
+<div style="width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
+<span style="float:right;">Adrian Soluch 2012</span>
+HTMLSTUFF;
+    }
+
+    /**
      *  HTML for logged in users
      */
     private function loggendIn($css, $data)
@@ -33,7 +53,7 @@ class Html extends Load {
         endif;
 
         $twitterUserForm = '';
-        $shortenerForm = '';
+        $shortenerForm = 'URL shortener:';
         if($data) :
             if(isset($data->twitter) && $data->twitter) :
                 foreach($data->twitter as $tw) :
@@ -43,7 +63,7 @@ class Html extends Load {
             if(isset($data->shortener) && $data->shortener) :
                 $i = 1;
                 foreach($data->shortener as $sh) :
-                    $shortenerForm .= '<input type="radio" name="postdata[shortener]" value="' . $sh['service'] . '|' . $sh['username'] . '" ' . (($i===1) ? 'checked=checked' : '') . ' ><span style="margin-right:3px;">' . $sh['username'] . ' ' . $sh['service'] . '</span>';
+                    $shortenerForm .= '<input type="radio" name="postdata[shortener]" value="' . $sh['service'] . '|' . $sh['username'] . '" ' . (($i===1) ? 'checked=checked' : '') . ' style="margin:0;float:left;" /><span style="margin-right:3px;">' . $sh['username'] . ' ' . $sh['service'] . '</span>';
                     $i++;
                 endforeach;
             endif;
@@ -59,13 +79,15 @@ socB
 <span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.6.5</span>
 <div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
 $mail
-<div id="sr_closeButton" class="sr_topButtons" >◧ ◨ x</div>
+<div id="sr_closeButton" class="sr_topButtons" >close x</div>
 
 <form id="" accept-charset="utf-8" action="http://sr.soluch.at/load/delegateMessage/" method="post">
-    $shortenerForm
-    <textarea id="sr_theURL" name="postdata[message]" cols="35" rows="3">
+    <textarea id="sr_textarea" name="postdata[message]" cols="35" rows="3" >
 $data->shorturl
 </textarea>
+$shortenerForm
+<div style="float:right;">chars used: <span id="sr_charCount" style="color:#D94432;font-weight:bold;"></span></div>
+<hr>
     <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
     <a href="http://sr.soluch.at/twitter/add/">add twitter account</a><br />
     $twitterUserForm
@@ -87,25 +109,8 @@ HTMLSTUFF;
     }
 
     /**
-     *  HTML for not logged in users
+     *  CSS
      */
-    private function notLoggendIn($css)
-    {
-        return <<<HTMLSTUFF
-$css
-<a href="http://sr.soluch.at" target="_blank" id="sr_title" class="" >SocialRouter</a>
-<span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.5.2</span>
-<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
-<div id="sr_closeButton" class="sr_topButtons" >◧ ◨ x</div>
-NOT LOGGED IN!
-<div id="otherContent">
-</div>
-
-<div style="width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
-<span style="float:right;">Adrian Soluch 2012</span>
-HTMLSTUFF;
-    }
-
     private function getCSS()
     {
 $css = <<<CSS
@@ -142,9 +147,11 @@ color:#000;
 clear:both;
 width:295px;
 height:70px;
-margin:10px 0;
+margin:0 0 5px 0;
 padding:3px;
 resize:none;
+font-size:12px;
+font-family:arial;
 }
 
 #socialrouterMaindiv a#sr_title {

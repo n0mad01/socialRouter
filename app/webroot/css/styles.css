@@ -66,7 +66,10 @@ color:#D66767;
 /* HEADER */
 .header {
 /*height:70px;*/
-background:url("/app/webroot/images/headerbg.jpg") repeat scroll center top #E5EDF8;
+/*background:url("/app/webroot/images/headerbg.jpg") repeat scroll center top #E5EDF8;*/
+/*background-color:#D1E751;*/
+background-color:#EEE6AB;
+padding:10px 0;
 }
 .header #logo {
 float:left;
@@ -183,7 +186,7 @@ margin-top:-1px;
 /* FOOTER */
 .footer {
 height:250px;
-background-color:#001521;
+background-color:#696758;
 color:#FBFBFB;
 }
 
