@@ -7,35 +7,35 @@
 
 class Controller {
 	
-	protected $postdata;   // POST-data
-
+    protected $postdata;   // POST-data
+    
     protected $viewdata = array();  // data array for the views
-
-	protected $errorMsg;   // error-messages for the views
-
-	protected $DB;         // Database Object
-
-	//public $collection; // Database Object
-
-	protected $memcache;   // Memcached Object
-
-	protected $session;    // Session Object
-
-	protected $config;     // Whole Config file config/config.php
-	
-	protected $allowed = array();          // here saved the Methods allowed to invoke 
-
-	protected $authExceptions = array();   // here saved the Methods allowed to invoke without being logged in
-
-	protected $twitter;                 // the Services_Twitter Object
-
+    
+    protected $errorMsg;   // error-messages for the views
+    
+    protected $DB;         // Database Object
+    
+    //public $collection; // Database Object
+    
+    protected $memcache;   // Memcached Object
+    
+    protected $session;    // Session Object
+    
+    protected $config;     // Whole Config file config/config.php
+    
+    protected $allowed = array();          // here saved the Methods allowed to invoke 
+    
+    protected $authExceptions = array();   // here saved the Methods allowed to invoke without being logged in
+    
+    protected $twitter;                 // the Services_Twitter Object
+    
     protected $twitterAccounts;
-
+    
     protected $renderDefault = TRUE;
-
+    
     protected $render = array();  // other view file to render
-
-	public function __construct() {} 
+    
+    public function __construct() {} 
 
     public function __set($name, $value)
     {
