@@ -1,4 +1,7 @@
 <?php
+/**
+ *  @author Adrian Soluch adrian@soluch.at
+ */
 
 include('app/classes/controller.php');
 require_once 'HTTP/OAuth/Consumer.php';

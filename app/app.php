@@ -2,6 +2,8 @@
 /**
  *	app/classes/app.php
  *	a collection of "global" functions & variables
+ *
+ *  @author Adrian Soluch adrian@soluch.at
  */
 
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ *  @author Adrian Soluch adrian@soluch.at
+ */
 
 include('app/config/config.php');
 include('app/app.php');

@@ -1,4 +1,9 @@
 <?php
+/**
+ *  parent:: class for all controllers
+ *
+ *  @author Adrian Soluch adrian@soluch.at
+ */
 
 class Controller {
 	

@@ -2,7 +2,7 @@
 /*$src = 'app/webroot/js/socialrouter.js';
 $out = 'app/webroot/js/packed/socialrouter.packed.js';
 
-require 'app/classes/class.JavaScriptPacker.php';
+require 'app/classes/vendors/class.JavaScriptPacker.php';
 
 $script = file_get_contents($src);
 

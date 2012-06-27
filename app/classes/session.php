@@ -1,4 +1,9 @@
 <?php
+/**
+ *  $_SESSION wrapper
+ *
+ *  @author Adrian Soluch adrian@soluch.at
+ */
 
 final class Session
 {
