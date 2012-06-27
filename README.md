@@ -2,6 +2,10 @@ socialRouter bookmarklet info distributor framework
 ===========================
 
 Distribute infos from various twitter accounts without leaving the page in your browser.
+* Collect data from actual site
+* Crunch links automaticly via bit.ly
+* insert hashtags from a hashtag pool
+
 Based on my MVC framework Quato https://github.com/n0mad01/quato
 
 Dependencies

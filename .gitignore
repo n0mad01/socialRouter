@@ -1,3 +1,2 @@
 app/config/config.php
 app/controllers/votes.php
-app/classes/Mongo/*
