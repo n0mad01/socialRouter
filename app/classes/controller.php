@@ -458,7 +458,6 @@ class Controller {
             return TRUE;
         }
         else if(!empty($_COOKIE['logintoken'])) {
-//dumper($_COOKIE['sr_logintoken']);
 
             $token = $_COOKIE['logintoken'];
 
@@ -470,7 +469,6 @@ class Controller {
                 if ($stmt->execute(array($token))) {
                     $result = $stmt->fetch();
                 }
-                //dumper($result['user_id']);die();
 
             } catch (Exception $e) {
                 dumper($e->getMessage());
@@ -482,22 +480,16 @@ class Controller {
                 return FALSE;
             }
 
-            //$ip = $_SERVER['REMOTE_ADDR'];
-            //$useragent = $_SERVER['HTTP_USER_AGENT'];
-
             $userdata = '';
             $stmt = $this->DB->prepare('SELECT email, id FROM users WHERE id = ?');
             if ($stmt->execute(array($result['user_id']))) {
                 $userdata = $stmt->fetch();
             }
 
-//dumper($result['user_id']);
-//dumper($userdata);die();
             if(empty($userdata)) {
 
                 return FALSE;
             }
-//dumper($userdata);die();
             // renew the session
             $this->session->renew();
 
@@ -506,8 +498,6 @@ class Controller {
             $this->session->user_id = $userdata['id'];
             $this->session->logintoken = $token;
             $this->session->loggedin = TRUE;
-
-//dumper($result['user_id']);die();
 
             return TRUE;
         }
