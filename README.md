@@ -1,4 +1,4 @@
-# socialRouter
+# socialRouter socB
 ### Bookmarklet info distributor framework
 
 Distribute infos from various twitter accounts without leaving the page in your browser.
