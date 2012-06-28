@@ -10,8 +10,8 @@ require_once 'HTTP/OAuth/Consumer.php';
 class Shorteners extends Controller {
 
 /**
- *	Method 'allowed' stores all the Methods of 
- *	this Class which are allowed to be accessed through REST
+ *  Method 'allowed' stores all the Methods of 
+ *  this Class which are allowed to be accessed through REST
  */
     public function allowed() {
 
@@ -19,28 +19,28 @@ class Shorteners extends Controller {
     }
 
 /**
- *	Method 'authExceptions' stores the Methods where the user doesn't need to 
- *	be logged in to access through REST
- *	(Automaticly redirection to login if not in list)
+ *  Method 'authExceptions' stores the Methods where the user doesn't need to 
+ *  be logged in to access through REST
+ *  (Automaticly redirection to login if not in list)
  */
-	//public function authExceptions()
+    //public function authExceptions()
     //{
-		//$this->authExceptions = array('index', 'test', 'getTwitterAccounts');
-	//}
+        //$this->authExceptions = array('index', 'test', 'getTwitterAccounts');
+    //}
 
-	/**
-	 *	default method
-	 */
-	//public function all()
+    /**
+     *  default method
+     */
+    //public function all()
     //{
-	//}
+    //}
 
-	public function index()
+    public function index()
     {
-		if($this->isLoggedIn()) {
+        if($this->isLoggedIn()) {
 
             $this->initDB();
-		    try {
+            try {
                 $result = '';
                 $stmt = $this->DB->prepare("SELECT service, username, apikey FROM users_shorteners WHERE user_id = ?");
                 if ($stmt->execute(array($_SESSION['__sessiondata']['user_id']))) {
@@ -48,35 +48,35 @@ class Shorteners extends Controller {
                 }
                 //dumper($result['user_id']);die();
 
-		    } catch (Exception $e) {
-		    	dumper($e->getMessage());
-		    	return FALSE;
-		    }
+            } catch (Exception $e) {
+                dumper($e->getMessage());
+                return FALSE;
+            }
 
             // set view data
             $this->data = $result;
         }
         else {
 
-    		header('Location: http://' . $_SERVER['HTTP_HOST'] . '/users/login/');
+            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/users/login/');
         }
-	}
+    }
 
-	public function remove($data)
+    public function remove($data)
     {
         $this->initDB();
-		try {
+        try {
             $result = '';
             $stmt = $this->DB->prepare("DELETE FROM users_shorteners WHERE user_id = ? AND service = ? AND username = ?");
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id'], $data[0], $data[1]))) {
             }
             //dumper($result['user_id']);die();
 
-		} catch (Exception $e) {
-			dumper($e->getMessage());
-			return FALSE;
-		}
-   		header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
+        } catch (Exception $e) {
+            dumper($e->getMessage());
+            return FALSE;
+        }
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
     }
 
     public function add($get)
@@ -104,7 +104,7 @@ class Shorteners extends Controller {
     {
 /*        $consumer_key = '672624184574.apps.googleusercontent.com';
         $consumer_secret = 'ZfqvuOBpT7ZS5twp5CI876LS';
-		try {
+        try {
             $httpRequest = new HTTP_Request2(
                 null,
                 HTTP_Request2::METHOD_GET,
@@ -117,23 +117,23 @@ class Shorteners extends Controller {
             $request = new HTTP_OAuth_Consumer_Request;
             $request->accept($httpRequest);
 
-    		$oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
+            $oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
             $oauth->accept($request);
 
-			$oauth->getRequestToken('https://www.googleapis.com/oauth2/v1/userinfo');*/
-			//$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener');
+            $oauth->getRequestToken('https://www.googleapis.com/oauth2/v1/userinfo');*/
+            //$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener');
 
             //$_SESSION['token']        = $oauth->getToken();
             //$_SESSION['token_secret'] = $oauth->getTokenSecret();
 
             //$authorize_link_twitter = $oauth->getAuthorizeUrl('https://api.twitter.com/oauth/authorize');
 
-/*		$oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
+/*      $oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
 
-		$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener', 'http://sr2.soluch.at/shorteners/google');
-		} catch (Services_Twitter_Exception $e) {
-			dumper($e->getMessage());
-		}
+        $oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener', 'http://sr2.soluch.at/shorteners/google');
+        } catch (Services_Twitter_Exception $e) {
+            dumper($e->getMessage());
+        }
         */
     }
 
@@ -142,35 +142,35 @@ class Shorteners extends Controller {
 
     }
 
-	public function bitly()
+    public function bitly()
     {
 //dumper($this->postdata);
-		if($this->isLoggedIn()) {
+        if($this->isLoggedIn()) {
 
-		    if(isset($this->postdata)) {
-			    $username = $this->postdata['bitly_username'];
-    			$apikey = $this->postdata['bitly_api_key'];
+            if(isset($this->postdata)) {
+                $username = $this->postdata['bitly_username'];
+                $apikey = $this->postdata['bitly_api_key'];
 
-			    if(empty($username) || empty($apikey)) {
-				    $ret['invalid']['error'] = _('Please Provide a username & API key!');
+                if(empty($username) || empty($apikey)) {
+                    $ret['invalid']['error'] = _('Please Provide a username & API key!');
                     return $ret;
-	    		}
+                }
                 else {
                     if($this->checkBitlyAccount($username)) {
                         // already exists
-				        $ret['invalid']['error'] = _('You have already entered this Account!');
+                        $ret['invalid']['error'] = _('You have already entered this Account!');
                         return $ret;
                     }
                     else {
                         $this->saveBitlyAccount($username, $apikey);
                         // redirect
-    					header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
+                        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
 //dumper($this->postdata);
                     }
                 }
             }
         }
-	}
+    }
 
     private function saveBitlyAccount($username, $apikey)
     {
@@ -200,7 +200,7 @@ class Shorteners extends Controller {
     private function checkBitlyAccount($username)
     {
         $this->initDB();
-		try {
+        try {
             $result = '';
             $stmt = $this->DB->prepare("SELECT id FROM users_shorteners WHERE user_id = ? AND service = 'bitly' AND username = ?");
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id'], $username))) {
@@ -208,10 +208,10 @@ class Shorteners extends Controller {
             }
             //dumper($result['user_id']);die();
 
-		} catch (Exception $e) {
-			dumper($e->getMessage());
-			return FALSE;
-		}
+        } catch (Exception $e) {
+            dumper($e->getMessage());
+            return FALSE;
+        }
 
         if($result) {
             return TRUE;

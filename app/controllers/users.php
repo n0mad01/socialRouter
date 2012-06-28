@@ -8,86 +8,72 @@ include('app/classes/controller.php');
 class Users extends Controller {
 
 /**
- *	Method 'allowed' stores all the Methods of 
- *	this Class which are allowed to be accessed through REST
+ *  Method 'allowed' stores all the Methods of 
+ *  this Class which are allowed to be accessed through REST
  */
-	//public function allowed() {
+    //public function allowed() {
 
-		//$this->allowed = array('test','index','login','logout','register');
-	//}
+        //$this->allowed = array('test','index','login','logout','register');
+    //}
 
 /**
- *	Method 'authExceptions' stores the Methods where the user doesn't need to 
- *	be logged in to access through REST
- *	(Automaticly redirection to login if not in list)
+ *  Method 'authExceptions' stores the Methods where the user doesn't need to 
+ *  be logged in to access through REST
+ *  (Automaticly redirection to login if not in list)
  */
-	public function authExceptions() {
+    public function authExceptions() {
 
-		$this->authExceptions = array('index','login','logout','register');
-	}
+        $this->authExceptions = array('index','login','logout','register');
+    }
 
-	/**
-	 *	default method
-	 */
-	public function index() {
-
-		//dumper($this->isLoginToken());
-        //dumper($this->session->email);
-        //if(isset($_SESSION['__sessiondata']['loggedin']) && $_SESSION['__sessiondata']['loggedin']) {
-        dumper($_SESSION);
-        //dumper($_COOKIE);
-        //dumper($this->memcache->get($this->session->email));
-        //dumper($_SERVER['HTTP_USER_AGENT']);
-		//dumper($_SERVER);
-
-		if($this->isLoggedIn()) {
-
-			//echo $this->isLoggedIn();
-			//dumper($_SESSION);
-			echo 'LOGGED IN!';
-		} else {
-
-			//echo $this->isLoggedIn();
-			echo 'NOT LOGGED IN!';
-		}
-	}
-	
     /**
-     *	User login  / Authentication
+     *  default method
      */
-	public function login()
+    public function index() {
+
+        if($this->isLoggedIn()) {
+
+            echo 'LOGGED IN!';
+        } else {
+
+            echo 'NOT LOGGED IN!';
+        }
+    }
+    
+    /**
+     *  User login  / Authentication
+     */
+    public function login()
     {
-		if(isset($this->postdata)) {
-//dumper($this->postdata);die();
+        if(isset($this->postdata)) {
 
-		//dumper($this->postdata);die();
-			$email = $this->postdata['email'];
-			$fromDB = $this->getUserByEmail($email);
+            $email = $this->postdata['email'];
+            $fromDB = $this->getUserByEmail($email);
 
-			if(empty($fromDB)) {
+            if(empty($fromDB)) {
 
-				$ret['invalid']['notfound'] = _('The user/password combination is wrong!');
-				return $ret;
-			} else {
+                $ret['invalid']['notfound'] = _('The user/password combination is wrong!');
+                return $ret;
+            } else {
 
-				$pass = $this->hashPassword($this->postdata['password']);
+                $pass = $this->hashPassword($this->postdata['password']);
 
-				// login correct
-				if($pass === $fromDB['password']) {
+                // login correct
+                if($pass === $fromDB['password']) {
 
-					$token = $this->generateToken($email);
+                    $token = $this->generateToken($email);
                     //dumper($fromDB);die();
 
-					$this->session->email = $email;
-					$this->session->user_id = $fromDB['id'];
-					$this->session->loggedin = TRUE;
-					$this->session->logintoken = $token;
+                    $this->session->email = $email;
+                    $this->session->user_id = $fromDB['id'];
+                    $this->session->loggedin = TRUE;
+                    $this->session->logintoken = $token;
 
                     // Save token in Cookie // 1500 days
-    				setcookie('logintoken', $token, time()+(3600*24*1500), '/', $_SERVER['HTTP_HOST']);
-//dumper($fromDB);
+                    setcookie('logintoken', $token, time()+(3600*24*1500), '/', $_SERVER['HTTP_HOST']);
+
                     $this->initDB();
-			        try {
+                    try {
                         $sql = "INSERT INTO logintokens (user_id, token, created, refreshed) VALUES (:userid, :token, now(), now())";
                         $pdoparams = array(
                             ':userid' => $fromDB['id'],
@@ -96,105 +82,102 @@ class Users extends Controller {
                         $stmt = $this->DB->prepare($sql);
                         $stmt->execute($pdoparams);
 
-			        }
+                    }
                     catch (Exception $e) {
 
-			        	dumper($e->getMessage());
-			        	return FALSE;
-			        }
+                        dumper($e->getMessage());
+                        return FALSE;
+                    }
 
                     // redirect
-					header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
+                    header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
                 
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
 /**
- *	User logout 
+ *  User logout 
  */
-	public function logout() {
+    public function logout() {
 
-		// destroy $_SESSION 
-		$this->session->destroy();
+        // destroy $_SESSION 
+        $this->session->destroy();
 
-		// unset cookies
+        // unset cookies
         setcookie("logintoken", '', time()+3600*24*1500, '/', $_SERVER['HTTP_HOST']);
         unset($_COOKIE['logintoken']);
 
-		header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
-	}
-
-	/**
-	 *	New User registration
-	 *	@return		Boolean
-	 */
-	public function register() {
-
-		$valid = TRUE;
-		$ret = array(); // returning errormessage
-		if(isset($this->postdata)) {
-
-			if(isset($this->postdata['businessTerms']) && $this->postdata['businessTerms'] === 'on') {
-				//$valid = TRUE;
-//dumper($this->postdata);die();
-            }
-            else {
-				$ret['invalid']['businessTerms'] = _('You must agree to the terms of use in order to proceed!');
-				$valid = FALSE;
-            }
-
-			if($this->validEmail($this->postdata['email'])) {
-				//$valid = TRUE;
-			}
-            else {
-				$ret['invalid']['email'] = _('Email address you\'ve entered is invalid, please try again!');
-				$valid = FALSE;
-			}
-		    if($this->getUserByEmail($this->postdata['email'])) {
-			    $ret['invalid']['email'] = _('This Email address is already used!');
-				$valid = FALSE;
-            }
-            else {
-				//$valid = TRUE;
-			}
-//dumper('T');die();
-
-			if($this->validPasswords($this->postdata['password'], $this->postdata['password2']))
-            {
-				//echo 'PASSWORDS OK!';
-			} else {
-				$ret['invalid']['passwords'] = _('The Passwords must be at least 6 characters long and both the same!');
-				$valid = FALSE;
-			}
-
-			if($valid) {
-				$ret = $this->saveUser($this->postdata);
-			}
-		}
-		return $ret;
-	}
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
+    }
 
     /**
-     *	save the freshly registered user
-     *
-     *	@param	Array()
+     *  New User registration
+     *  @return     Boolean
      */
-	private function saveUser($user)
+    public function register() {
+
+        $valid = TRUE;
+        $ret = array(); // returning errormessage
+        if(isset($this->postdata)) {
+
+            if(isset($this->postdata['businessTerms']) && $this->postdata['businessTerms'] === 'on') {
+                //$valid = TRUE;
+            }
+            else {
+                $ret['invalid']['businessTerms'] = _('You must agree to the terms of use in order to proceed!');
+                $valid = FALSE;
+            }
+
+            if($this->validEmail($this->postdata['email'])) {
+                //$valid = TRUE;
+            }
+            else {
+                $ret['invalid']['email'] = _('Email address you\'ve entered is invalid, please try again!');
+                $valid = FALSE;
+            }
+            if($this->getUserByEmail($this->postdata['email'])) {
+                $ret['invalid']['email'] = _('This Email address is already used!');
+                $valid = FALSE;
+            }
+            else {
+                //$valid = TRUE;
+            }
+
+            if($this->validPasswords($this->postdata['password'], $this->postdata['password2']))
+            {
+                //echo 'PASSWORDS OK!';
+            } else {
+                $ret['invalid']['passwords'] = _('The Passwords must be at least 6 characters long and both the same!');
+                $valid = FALSE;
+            }
+
+            if($valid) {
+                $ret = $this->saveUser($this->postdata);
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     *  save the freshly registered user
+     *
+     *  @param  Array()
+     */
+    private function saveUser($user)
     {
-		$fromDB = $this->getUserByEmail($user['email']);
-		if(empty($fromDB)) {
-//dumper($fromDB);die();
+        $fromDB = $this->getUserByEmail($user['email']);
+        if(empty($fromDB)) {
 
-			// set vars to save
-			unset($user['password2']);
-			$user['password'] = $this->hashPassword($user['password']);
-			//$user['lastlogin'] = date('Y-m-d');
-			//$user['modified'] = date('Y-m-d');
+            // set vars to save
+            unset($user['password2']);
+            $user['password'] = $this->hashPassword($user['password']);
+            //$user['lastlogin'] = date('Y-m-d');
+            //$user['modified'] = date('Y-m-d');
 
-			// save new user
-			try {
+            // save new user
+            try {
                 $this->initDB();
 
                 $pdoparams = array(
@@ -206,36 +189,34 @@ class Users extends Controller {
                 $stmt->execute($pdoparams);
                 $userID = $this->DB->lastInsertId();
 
-//dumper($userID);die();
+            } catch (Exception $e) {
 
-			} catch (Exception $e) {
-
-				dumper($e->getMessage());
-				return FALSE;
-			}
-			// redirect
-			//header('Location: http://' . $_SERVER['HTTP_HOST'] . '/users/login/');
-			//$this->postdata['email'] = $user['email'];
-			//$this->postdata['password'] = $user['password'];
+                dumper($e->getMessage());
+                return FALSE;
+            }
+            // redirect
+            //header('Location: http://' . $_SERVER['HTTP_HOST'] . '/users/login/');
+            //$this->postdata['email'] = $user['email'];
+            //$this->postdata['password'] = $user['password'];
 
             $this->login();
             
             
-			//return TRUE;
-		} else {
+            //return TRUE;
+        } else {
 
-			$ret['invalid']['email'] = _('This Email address is already used!');
-			return $ret;
-		}
-	}
+            $ret['invalid']['email'] = _('This Email address is already used!');
+            return $ret;
+        }
+    }
 
 /**
- *	lookup if email address already exists in db
+ *  lookup if email address already exists in db
  */
-	private function getUserByEmail($email) {
+    private function getUserByEmail($email) {
 
         $this->initDB();
-		try {
+        try {
 
             $result = '';
             $stmt = $this->DB->prepare("SELECT * FROM users where email = ?");
@@ -243,12 +224,11 @@ class Users extends Controller {
 
                 $result = $stmt->fetch();
             }
-            //dumper($result);die();
 
-		} catch (Exception $e) {
-			dumper($e->getMessage());
-			return FALSE;
-		}
-		return $result;
-	}
+        } catch (Exception $e) {
+            dumper($e->getMessage());
+            return FALSE;
+        }
+        return $result;
+    }
 }

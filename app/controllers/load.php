@@ -11,8 +11,8 @@ require_once 'HTTP/OAuth/Consumer.php';
 class Load extends Controller {
 
 /**
- *	Method 'allowed' stores all the Methods of 
- *	this Class which are allowed to be accessed through REST
+ *  Method 'allowed' stores all the Methods of 
+ *  this Class which are allowed to be accessed through REST
  */
     public function allowed() {
 
@@ -20,25 +20,25 @@ class Load extends Controller {
     }
 
 /**
- *	Method 'authExceptions' stores the Methods where the user doesn't need to 
- *	be logged in to access through REST
- *	(Automaticly redirection to login if not in list)
+ *  Method 'authExceptions' stores the Methods where the user doesn't need to 
+ *  be logged in to access through REST
+ *  (Automaticly redirection to login if not in list)
  */
-	//public function authExceptions()
+    //public function authExceptions()
     //{
-		//$this->authExceptions = array('index', 'test', 'getTwitterAccounts');
-	//}
+        //$this->authExceptions = array('index', 'test', 'getTwitterAccounts');
+    //}
 
-	/**
-	 *	default method
-	 */
-	public function index()
+    /**
+     *  default method
+     */
+    public function index()
     {
         $GLOBALS['renderingTime'] = FALSE;
         $GLOBALS['renderPiwik'] = FALSE;
         $this->renderDefault = FALSE;
 
-		if($this->isLoggedIn()) {
+        if($this->isLoggedIn()) {
 
             $this->twitterAccounts = $this->getTwitterAccounts();
 
@@ -49,9 +49,9 @@ class Load extends Controller {
             }
 //dumper($this->shortenerAccounts);die();
         }
-	}
+    }
 
-	public function js()
+    public function js()
     {
         $GLOBALS['renderingTime'] = FALSE;
         $GLOBALS['renderPiwik'] = FALSE;
@@ -61,7 +61,7 @@ class Load extends Controller {
     public function getShortenerAccounts()
     {
         $this->initDB();
-		try {
+        try {
             $result = '';
             $stmt = $this->DB->prepare("SELECT service, username, apikey FROM users_shorteners WHERE user_id = ? AND active = true");
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id']))) {
@@ -69,17 +69,17 @@ class Load extends Controller {
             }
             //dumper($result['user_id']);die();
 
-		} catch (Exception $e) {
-			dumper($e->getMessage());
-			return FALSE;
-		}
+        } catch (Exception $e) {
+            dumper($e->getMessage());
+            return FALSE;
+        }
         return $result;
     }
 
     protected function getTwitterAccounts()
     {
         $this->initDB();
-		try {
+        try {
             $stmt = $this->DB->prepare("SELECT * FROM socialaccounts WHERE user_id = :userid AND service = 'twitter'");
             $stmt->execute(
                 array(
@@ -92,29 +92,29 @@ class Load extends Controller {
                 return $row;
             }
             else {
-			    return FALSE;
+                return FALSE;
             }
-		}
+        }
         catch (Exception $e) {
 
-			dumper($e->getMessage());
-			return FALSE;
-		}
+            dumper($e->getMessage());
+            return FALSE;
+        }
     }
 
-	public function delegateMessage()
+    public function delegateMessage()
     {
         if(isset($_SESSION['__sessiondata']['loggedin']) && $_SESSION['__sessiondata']['loggedin']) {
 
-		    if(isset($this->postdata)) {
-		        dumper($this->postdata);
+            if(isset($this->postdata)) {
+                dumper($this->postdata);
 
                 if(isset($this->postdata['twitterUser'])) {
 
                     $inQuery = implode(',', array_fill(0, count($this->postdata['twitterUser']), '?'));
 //dumper($inQuery);
                     $this->initDB();
-		            try {
+                    try {
                         $stmt = $this->DB->prepare("SELECT token, token_secret FROM socialaccounts WHERE user_id = ? AND service = 'twitter' AND username IN($inQuery)");
 
                         $stmt->bindValue(1, $_SESSION['__sessiondata']['user_id']);
@@ -127,12 +127,12 @@ class Load extends Controller {
                         $row = $stmt->fetchAll();
                         //dumper($row);
 
-		            }
+                    }
                     catch (Exception $e) {
 
-		            	dumper($e->getMessage());
-		            	return FALSE;
-		            }
+                        dumper($e->getMessage());
+                        return FALSE;
+                    }
 
                     //dumper($row);
                     try {
