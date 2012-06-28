@@ -24,17 +24,12 @@ final class Session
     }
     
     /**
-     * @access private
-     *
-     * Kopierkonstruktor verbieten
+     * @access  private
      */
     private function __clone() {}
     
     /**
-     * @access private
-     * @return Session
-     *
-     * Erzeugt die Instanz von Session
+     * generate a session instance
      */
     public static function getInstance()
     {
@@ -54,7 +49,7 @@ final class Session
     }
     
     /**
-     *  unset SessionVars
+     *  Unset SessionVars
      */
     public function __unset($key)
     {
@@ -68,11 +63,10 @@ final class Session
     }
     
     /**
-     * @access public
-     * @param string $key
-     * @return mixed|NULL
-     *
-     * Ermöglicht Lesen von Sessionvariablen
+     * read SessionVars
+     * 
+     * @param   String      $key
+     * @return  Mixed|NULL
      */
     public function __get($key)
     {
@@ -85,12 +79,10 @@ final class Session
     }
     
     /**
-     * @access public
-     * @param string $key
-     * @return bool
+     * Returns TRUE when $keys exists
      *
-     * gibt true zurück, wenn $key existiert
-     * sonst false
+     * @param   String  $key
+     * @return  Bool
      */
     public function exists($key)
     {
@@ -98,11 +90,10 @@ final class Session
     }
     
     /**
-     * @access public
-     * @param string $key
-     * @return bool
+     * ALIAS for Session::exists($key)
      *
-     * ALIAS FÜR Session::exists($key)
+     * @param   String  $key
+     * @return  Bool
      */
     public function __isset($key)
     {
@@ -110,9 +101,9 @@ final class Session
     }
     
     /**
-     * @access public
+     * Close the Session
      *
-     * Schließt die Session
+     * @access public
      */
     public function close()
     {
@@ -120,7 +111,7 @@ final class Session
     }
     
     /**
-     * Generiert eine neue Session-ID
+     * Generate new Session-ID
      */
     public function renew($del = FALSE)
     {
@@ -128,10 +119,9 @@ final class Session
     }
     
     /**
-     * @access public
-     * @return string
+     * Returns the Session-ID
      *
-     * Liefert dei aktuelle Session-ID
+     * @return string
      */
     public function getID()
     {
@@ -149,9 +139,7 @@ final class Session
     }
 
     /**
-     * @access public
-     *
-     * Zerstört die Session
+     * Destroy the Session
      */
     public function destroy()
     {
@@ -159,11 +147,6 @@ final class Session
         session_destroy();
     }
     
-    /**
-     * @access public
-     *
-     * Destruktor
-     */
     public function __destruct()
     {
         $this->close();
