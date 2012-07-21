@@ -31,6 +31,24 @@ class Home extends Controller {
      */
     public function index()
     {
+        if( isset($_SESSION['__sessiondata']['loggedin']) ) {
+
+            $this->initDB();
+            try {
+                $stmt = $this->DB->prepare("SELECT id, service, username, image, active, created FROM socialaccounts WHERE user_id = :userid AND service = 'twitter'");
+                $stmt->execute(
+                    array(
+                        ':userid' => $_SESSION['__sessiondata']['user_id']
+                    )
+                );
+                $this->services = $stmt->fetchAll();
+            }
+            catch (Exception $e) {
+
+                dumper($e->getMessage());
+                return FALSE;
+            }
+        }
         //dumper($_SERVER);
     }
 }

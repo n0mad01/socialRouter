@@ -7,16 +7,22 @@
 <div class="container">
 	<div class="row">
 		<div class="eightcol">
-            drag this to your bookmarks or bookmarks toolbar:
-            <a href="javascript:(function(){stop();document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';})();">SocialRouter</a>
-            <!--a href="javascript:(function(){document.body.appendChild(document.createElement('script')).src='http://sr.soluch.at/app/webroot/js/socialrouter.js';})();">SocialRouter</a-->
+<?php
+//echo $this->getFlashMsg();
+            foreach($this->viewdata['services'] as $service ) :
+            //dumper($service);
+                echo '<img alt="" src="' . $service['image'] . '" />';
+            endforeach;
+?>
 		</div>
 		<div class="fourcol last">
-            <?php 
-            if(!$this->isAuth()) : ?>
-                <?php
+            drag this to your bookmarks or bookmarks toolbar:
+            <a href="javascript:(function(){stop();document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';})();">SocialRouter</a>
+<?php 
+            if(!$this->isAuth()) :
                 require('app/views/helpers/registration.php');
-            endif; ?>
+            endif; 
+?>
 		</div>
 	</div>
 </div>
