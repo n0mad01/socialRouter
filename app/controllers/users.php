@@ -32,11 +32,10 @@ class Users extends Controller {
     public function index() {
 
         if($this->isLoggedIn()) {
-
-            echo 'LOGGED IN!';
+            $this->accounts = $this->getUsersSocialAccounts( $_SESSION['__sessiondata']['user_id'] );
+            //dumper($ret);
         } else {
 
-            echo 'NOT LOGGED IN!';
         }
     }
     
@@ -230,5 +229,25 @@ class Users extends Controller {
             return FALSE;
         }
         return $result;
+    }
+
+    private function getUsersSocialAccounts($id)
+    {
+        $this->initDB();
+
+        try {
+            $stmt = $this->DB->prepare("SELECT id, service, username, image, active, created FROM socialaccounts WHERE user_id = :userid AND active = TRUE");
+            $stmt->execute(
+                array(
+                    ':userid' => $id
+                )
+            );
+            return $stmt->fetchAll();
+        }
+        catch (Exception $e) {
+
+            dumper($e->getMessage());
+            return FALSE;
+        }
     }
 }

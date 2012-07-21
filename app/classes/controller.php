@@ -45,7 +45,9 @@ class Controller {
         if (!empty($name) && array_key_exists($name, $this->viewdata)) {
             return $this->viewdata[$name];
         }
+echo 'RETRETE';
         return NULL;
+
     } 
 
     public function loadMethods($rest) {

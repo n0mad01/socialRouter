@@ -8,7 +8,8 @@
 	<div class="row">
 		<div class="eightcol">
             drag this to your bookmarks or bookmarks toolbar:
-            <a href="javascript:(function(){document.body.appendChild(document.createElement('script')).src='http://sr.soluch.at/app/webroot/js/socialrouter.js';})();">SocialRouter</a>
+            <a href="javascript:(function(){stop();document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';})();">SocialRouter</a>
+            <!--a href="javascript:(function(){document.body.appendChild(document.createElement('script')).src='http://sr.soluch.at/app/webroot/js/socialrouter.js';})();">SocialRouter</a-->
 		</div>
 		<div class="fourcol last">
             <?php 

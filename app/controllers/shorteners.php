@@ -46,7 +46,6 @@ class Shorteners extends Controller {
                 if ($stmt->execute(array($_SESSION['__sessiondata']['user_id']))) {
                     $result = $stmt->fetchAll();
                 }
-                //dumper($result['user_id']);die();
 
             } catch (Exception $e) {
                 dumper($e->getMessage());

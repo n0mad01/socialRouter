@@ -3,7 +3,7 @@
  *  @author Adrian Soluch adrian@soluch.at
  */
 
-include('app/classes/controller.php');
+require_once('app/classes/controller.php');
 require_once 'Services/Twitter.php';
 require_once 'HTTP/OAuth/Consumer.php';
 
@@ -24,7 +24,25 @@ class Twitter extends Controller {
      */
     public function index()
     {
-        $this->setFlashMsg('FLASH');
+        $this->setFlashMsg(_(''));
+
+        //dumper($_SESSION);
+        $this->initDB();
+
+        try {
+            $stmt = $this->DB->prepare("SELECT id, service, username, image, active, created FROM socialaccounts WHERE user_id = :userid AND service = 'twitter'");
+            $stmt->execute(
+                array(
+                    ':userid' => $_SESSION['__sessiondata']['user_id']
+                )
+            );
+            $this->services = $stmt->fetchAll();
+        }
+        catch (Exception $e) {
+
+            dumper($e->getMessage());
+            return FALSE;
+        }
     }
 
     public function testTweet()

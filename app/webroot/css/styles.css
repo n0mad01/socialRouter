@@ -59,6 +59,10 @@ display: block;		/* Stops image links getting text link styles */
 clear:both;
 }
 
+.hidden {
+display:none;
+}
+
 .errormsg {
 color:#D66767;
 }
@@ -68,8 +72,8 @@ color:#D66767;
 /*height:70px;*/
 /*background:url("/app/webroot/images/headerbg.jpg") repeat scroll center top #E5EDF8;*/
 /*background-color:#D1E751;*/
-background-color:#EEE6AB;
-padding:10px 0;
+background-color:#202B32;
+padding:20px 0;
 }
 .header #logo {
 float:left;
@@ -139,6 +143,21 @@ float:right;
 .mainMenu #menu ul li {
 display:inline;
 }
+
+/* SECOND MENU */
+.secondMenu {
+height:30px;
+background-color:#940000;
+}
+    .secondMenu #secondMenu {}
+    .secondMenu ul#secondMenu li .secondMenuFirstHidden {
+    position:absolute;
+    padding:10px;
+    background-color:#940000;
+    }
+    .secondMenu ul#secondMenu li:hover .hidden {
+    display:block;
+    }
 
 /* CONTENT - ACCOUNT - TABS */ 
 .account {
