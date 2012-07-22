@@ -16,7 +16,7 @@ final class Session
      */
     private function __construct()
     {
-        session_start();
+        @session_start();
         if(!isset($_SESSION[Session::$sessArrayKey])) {
 
             $_SESSION[Session::$sessArrayKey] = array();
