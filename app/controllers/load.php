@@ -4,7 +4,7 @@
  */
 
 //include('app/classes/controller.php');
-include('app/controllers/shorteners.php');
+require_once('app/controllers/shorteners.php');
 require_once 'Services/Twitter.php';
 require_once 'HTTP/OAuth/Consumer.php';
 
@@ -47,7 +47,6 @@ class Load extends Controller {
             if(isset($_SERVER['HTTP_REFERER'])) {
                 $this->referer = Shorteners::shorten($_SERVER['HTTP_REFERER']);
             }
-//dumper($this->shortenerAccounts);die();
         }
     }
 
@@ -67,7 +66,6 @@ class Load extends Controller {
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id']))) {
                 $result = $stmt->fetchAll();
             }
-            //dumper($result['user_id']);die();
 
         } catch (Exception $e) {
             dumper($e->getMessage());
@@ -87,7 +85,6 @@ class Load extends Controller {
                 )
             );
             $row = $stmt->fetchAll();
-        //dumper($row);
             if($row) {
                 return $row;
             }
@@ -112,7 +109,7 @@ class Load extends Controller {
                 if(isset($this->postdata['twitterUser'])) {
 
                     $inQuery = implode(',', array_fill(0, count($this->postdata['twitterUser']), '?'));
-//dumper($inQuery);
+
                     $this->initDB();
                     try {
                         $stmt = $this->DB->prepare("SELECT token, token_secret FROM socialaccounts WHERE user_id = ? AND service = 'twitter' AND username IN($inQuery)");
@@ -125,7 +122,6 @@ class Load extends Controller {
                         $stmt->execute();
 
                         $row = $stmt->fetchAll();
-                        //dumper($row);
 
                     }
                     catch (Exception $e) {
@@ -134,14 +130,11 @@ class Load extends Controller {
                         return FALSE;
                     }
 
-                    //dumper($row);
                     try {
                         $this->twitter = new Services_Twitter();
 
                         foreach($row as $r) {
 
-                            //dumper($r);
-                            //$oauth = new HTTP_OAuth_Consumer(CONSUMER_KEY, CONSUMER_SECRET, $row['token'], $row['token_secret']);
                             $oauth = new HTTP_OAuth_Consumer(CONSUMER_KEY, CONSUMER_SECRET, $r['token'], $r['token_secret']);
                             $this->twitter->setOAuth($oauth);
 

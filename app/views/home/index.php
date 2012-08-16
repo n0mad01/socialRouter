@@ -9,7 +9,13 @@
 		<div class="eightcol">
 <?php
             if( $this->isAuth() ) :
-                foreach($this->viewdata['services'] as $service ) :
+
+                echo '<a href="twitter/add">' . _('Add a new twitter Account') . '</a>';
+                echo '<br />';
+                echo '<a href="shorteners/add/bitly">' . _('Add a new bitly Account') . '</a>';
+                echo '<br />';
+
+                foreach( $this->viewdata['services'] as $service ) :
                 //dumper($service);
                     echo '<img alt="" src="' . $service['image'] . '" />';
                 endforeach;

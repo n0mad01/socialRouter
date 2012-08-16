@@ -11,15 +11,15 @@ class Html extends Load {
     {
         $css = Html::getCSS();
 
-        if(parent::isAuth()) {
+        if( parent::isAuth() ) {
 
-            $html = Html::loggendIn($css, $data);
+            $html = Html::loggendIn( $css, $data );
         }
         else {
-            $html = Html::notLoggendIn($css);
+            $html = Html::notLoggendIn( $css );
         }
 
-        return str_replace("\n", '', $html);
+        return str_replace( "\n", '', $html );
     }
 
     /**
@@ -33,7 +33,7 @@ $css
 <span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.5.2</span>
 <div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
 <div id="sr_closeButton" class="sr_topButtons" >close x</div>
-NOT LOGGED IN!
+You have to log in in order to use SocialRouter!
 <div id="otherContent">
 </div>
 
@@ -47,7 +47,6 @@ HTMLSTUFF;
      */
     private function loggendIn($css, $data)
     {
-        //dumper($data);
         $mail = '';
         if(isset($_SESSION['__sessiondata']['email'])) :
             $mail = '<span style="font-size:10px;">';
@@ -84,18 +83,24 @@ socB
 $mail
 <div id="sr_closeButton" class="sr_topButtons" >close x</div>
 
-<form id="" accept-charset="utf-8" action="http://sr2.soluch.at/load/delegateMessage/" method="post">
+<form id="socialRouterForm" accept-charset="utf-8" action="http://sr2.soluch.at/load/delegateMessage/" method="post" target="_blank" >
     <textarea id="sr_textarea" name="postdata[message]" cols="35" rows="3" >
+
 $data->shorturl
+
 </textarea>
+
 $shortenerForm
+
 <div style="float:right;">chars used: <span id="sr_charCount" style="color:#D94432;font-weight:bold;"></span></div>
-<hr>
+<hr />
     <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
     <a href="http://sr2.soluch.at/twitter/add/">add twitter account</a><br />
+
     $twitterUserForm
+
     <br />
-	<input type="submit" value="Submit" />
+	<input type="submit" value="Submit" id="submitSocial" />
 </form>
 
 

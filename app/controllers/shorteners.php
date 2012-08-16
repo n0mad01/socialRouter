@@ -5,7 +5,6 @@
 
 include('app/classes/controller.php');
 require_once 'HTTP/OAuth/Consumer.php';
-//require_once 'Services/Twitter.php';
 
 class Shorteners extends Controller {
 
@@ -26,13 +25,6 @@ class Shorteners extends Controller {
     //public function authExceptions()
     //{
         //$this->authExceptions = array('index', 'test', 'getTwitterAccounts');
-    //}
-
-    /**
-     *  default method
-     */
-    //public function all()
-    //{
     //}
 
     public function index()
@@ -69,7 +61,6 @@ class Shorteners extends Controller {
             $stmt = $this->DB->prepare("DELETE FROM users_shorteners WHERE user_id = ? AND service = ? AND username = ?");
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id'], $data[0], $data[1]))) {
             }
-            //dumper($result['user_id']);die();
 
         } catch (Exception $e) {
             dumper($e->getMessage());
@@ -84,7 +75,6 @@ class Shorteners extends Controller {
             $service = strtolower($get[0]);
             switch($service) {
                 case 'google' :
-                    //dumper($get[0]);
                     $this->addGoogle();
                     break;
                 case 'bitly' :
@@ -92,58 +82,11 @@ class Shorteners extends Controller {
                     $this->render(array('controller'=>'shorteners', 'view'=>'bitly'));
                     return $this->bitly();
             }
-
-            //if(strtolower($get[0]) === 'google') {
-            //dumper($get[0]);
-            //}
         }
-    }
-
-    public function addGoogle()
-    {
-/*        $consumer_key = '672624184574.apps.googleusercontent.com';
-        $consumer_secret = 'ZfqvuOBpT7ZS5twp5CI876LS';
-        try {
-            $httpRequest = new HTTP_Request2(
-                null,
-                HTTP_Request2::METHOD_GET,
-                array (
-                    'ssl_verify_peer'   => false,
-                    'ssl_verify_host'   => false
-                )
-            );
-            $httpRequest->setHeader('Accept-Encoding', '.*');
-            $request = new HTTP_OAuth_Consumer_Request;
-            $request->accept($httpRequest);
-
-            $oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
-            $oauth->accept($request);
-
-            $oauth->getRequestToken('https://www.googleapis.com/oauth2/v1/userinfo');*/
-            //$oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener');
-
-            //$_SESSION['token']        = $oauth->getToken();
-            //$_SESSION['token_secret'] = $oauth->getTokenSecret();
-
-            //$authorize_link_twitter = $oauth->getAuthorizeUrl('https://api.twitter.com/oauth/authorize');
-
-/*      $oauth = new HTTP_OAuth_Consumer($consumer_key, $consumer_secret);
-
-        $oauth->getRequestToken('https://www.googleapis.com/auth/urlshortener', 'http://sr2.soluch.at/shorteners/google');
-        } catch (Services_Twitter_Exception $e) {
-            dumper($e->getMessage());
-        }
-        */
-    }
-
-    public function google()
-    {
-
     }
 
     public function bitly()
     {
-//dumper($this->postdata);
         if($this->isLoggedIn()) {
 
             if(isset($this->postdata)) {
@@ -164,7 +107,6 @@ class Shorteners extends Controller {
                         $this->saveBitlyAccount($username, $apikey);
                         // redirect
                         header('Location: http://' . $_SERVER['HTTP_HOST'] . '/shorteners/index/');
-//dumper($this->postdata);
                     }
                 }
             }
@@ -175,7 +117,6 @@ class Shorteners extends Controller {
     {
         $this->initDB();
         try {
-            //$sql = "INSERT INTO logintokens (user_id, token, created, refreshed) VALUES (:userid, :token, now(    ), now())";
             $stmt = $this->DB->prepare("INSERT INTO users_shorteners (user_id, service, username, apikey, created, modified) VALUES (?, 'bitly', ?, ?, now(), now())");
             $result = $stmt->execute(array($_SESSION['__sessiondata']['user_id'], $username, $apikey));
         }
@@ -205,7 +146,6 @@ class Shorteners extends Controller {
             if ($stmt->execute(array($_SESSION['__sessiondata']['user_id'], $username))) {
                 $result = $stmt->fetch();
             }
-            //dumper($result['user_id']);die();
 
         } catch (Exception $e) {
             dumper($e->getMessage());
@@ -240,7 +180,7 @@ class Shorteners extends Controller {
             $BITLY_APIKEY . $apiKey .
             $BITLY_LONGURL . urlencode($longurl);
 
-//http://api.bit.ly/v3/shorten?format=txt&login=$username$&apiKey=$key$&longUrl=$longurl$
+        //http://api.bit.ly/v3/shorten?format=txt&login=$username$&apiKey=$key$&longUrl=$longurl$
 
         $options = array(
             CURLOPT_RETURNTRANSFER => true,

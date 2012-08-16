@@ -12,20 +12,14 @@ require(__DIR__ . '/divcontent.php');
 //dumper($this->referer);die();
 //$html = new Html;
 //$content = $html->getHTML();
-$options = '';
-if(isset($this->twitterAccounts)) :
-/*    $options = array(
-        'twitter'=>$this->twitterAccounts,
-        'shortener'=>$this->shortenerAccounts,
-        'shorturl'=>$this->referer,
-    );*/
-    
+//$options = '';
+if( isset($this->twitterAccounts) ) :
     $options = new stdClass;
     $options->shorturl = $this->referer;
     $options->twitter = $this->twitterAccounts;
     $options->shortener = $this->shortenerAccounts;
-
 endif;
+
 $content = Html::getHTML($options);
 
 $cookies = $_COOKIE;
@@ -49,7 +43,7 @@ var socialrouter = (function(){
     var createDiv = function() {
 
         if(document.getElementById('socialrouterMaindiv') !== null) {
-            removeSR(); // div already exists - remove
+            removeSR(); // if div already exists - remove
         }
 
         theDiv = document.createElement("div");
@@ -77,6 +71,8 @@ var socialrouter = (function(){
     var callListeners = function() {
         document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
         textarea.onkeyup = charCountSR;
+
+        document.getElementById("submitSocial").addEventListener("click", submitSocial, false);
     }
 
 /*    var callJSONP = function() {
@@ -114,6 +110,24 @@ var socialrouter = (function(){
         el.parentNode.removeChild(el);
     }
 
+    var submitSocial = function( event ) {
+        //if ( event.preventDefault ) event.preventDefault();
+        //document.getElementById("submitSocial").
+        //event.returnValue = false;
+    }
+
+/*Event.observe('socialRouterForm', 'submit', function(event) {
+    $('socialRouterForm').request({
+        onFailure: function() { alert('f'); },
+        onSuccess: function(t) {
+            //$('result').update(t.responseText);
+            alert('w');
+        }
+    });
+    Event.stop(event); // stop the form from submitting
+});*/
+
+
     return {
         init : createDiv,
         //callback : parseRequest
@@ -126,7 +140,7 @@ socialrouter.init();
 
 // HELPER FUNCTIONS
 // OBJECT DUMPER HELPER
-function dump(arr,level) {
+/*function dump(arr,level) {
 	var dumped_text = "";
 	if(!level) level = 0;
 
@@ -149,4 +163,4 @@ function dump(arr,level) {
 			dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
 		}
 	return dumped_text;
-}
+}*/
