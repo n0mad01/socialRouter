@@ -16,7 +16,7 @@ class Load extends Controller {
  */
     public function allowed() {
 
-        $this->allowed = array('index', 'delegateMessage', 'js');
+        $this->allowed = array('index', 'delegateMessage', 'delegateMessageJSONP', 'js');
     }
 
 /**
@@ -99,9 +99,40 @@ class Load extends Controller {
         }
     }
 
+    public function delegateMessageJSONP()
+    {
+        $GLOBALS['renderingTime'] = FALSE;
+        $GLOBALS['renderPiwik'] = FALSE;
+        $this->renderDefault = FALSE;
+
+        if(isset($_SESSION['__sessiondata']['loggedin']) && $_SESSION['__sessiondata']['loggedin']) {
+            dumper($_GET);
+        }
+    }
+
+function parse_utf8_url($url)
+{
+    static $keys = array('scheme'=>0,'user'=>0,'pass'=>0,'host'=>0,'port'=>0,'path'=>0,'query'=>0,'fragment'=>0);
+    if (is_string($url) && preg_match(
+            '~^((?P<scheme>[^:/?#]+):(//))?((\\3|//)?(?:(?P<user>[^:]+):(?P<pass>[^@]+)@)?(?P<host>[^/?:#]*))(:(?P<port>\\d+))?' .
+            '(?P<path>[^?#]*)(\\?(?P<query>[^#]*))?(#(?P<fragment>.*))?~u', $url, $matches))
+    {
+        foreach ($matches as $key => $value)
+            if (!isset($keys[$key]) || empty($value))
+                unset($matches[$key]);
+        return $matches;
+    }
+    return false;
+}
+
     public function delegateMessage()
     {
+        $GLOBALS['renderingTime'] = FALSE;
+        $GLOBALS['renderPiwik'] = FALSE;
+        $this->renderDefault = FALSE;
+
         if(isset($_SESSION['__sessiondata']['loggedin']) && $_SESSION['__sessiondata']['loggedin']) {
+        //dumper($_SESSION);
 
             if(isset($this->postdata)) {
                 dumper($this->postdata);

@@ -1,4 +1,5 @@
 <?php
+echo 'alert("TEST");';
 /*$src = 'app/webroot/js/socialrouter.js';
 $out = 'app/webroot/js/packed/socialrouter.packed.js';
 

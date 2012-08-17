@@ -55,7 +55,6 @@ var socialrouter = (function(){
 
         //theDiv.innerHTML = 'SOCIALROUTERB';
         theDiv.innerHTML = '<?php echo $content; ?>';
-        //callJSONP();
         
         // SET GLOBALS*
         textarea = document.getElementById('sr_textarea');
@@ -75,11 +74,16 @@ var socialrouter = (function(){
         document.getElementById("submitSocial").addEventListener("click", submitSocial, false);
     }
 
-/*    var callJSONP = function() {
+    var callJSONP = function( string )
+    {
+        //JSONPurl = 'http://sr2.soluch.at/load/delegateMessage/?callback=socialrouter.callback&' + encodeURIComponent( string );
+        JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP/?callback=socialrouter.callback&' + string ;
+        //alert(JSONPurl);
+
         script = document.createElement('script');
-        script.setAttribute('src', JSONPurl);
+        script.setAttribute( 'src', JSONPurl );
         document.getElementsByTagName('head')[0].appendChild(script);
-    }*/
+    }
 
 /*    var parseRequest = function(response) {
         // inject the new elements
@@ -111,9 +115,33 @@ var socialrouter = (function(){
     }
 
     var submitSocial = function( event ) {
-        //if ( event.preventDefault ) event.preventDefault();
+        
+            
+        // get data from form & put GET string together
+        var string = "", 
+            elem = document.getElementsByName('postdata[twitterUser][]'),
+            l = elem.length,
+            j = 0;
+
+        string += 'textarea=' + encodeURIComponent( document.getElementById("sr_textarea").value ) + '&';
+
+        
+        for( i=0; i<l; i++) {
+            if( elem[i].checked == true ) {
+                //string += 'twitterUser[' + j + ']=' + elem[i].value + "&"; 
+                string += 'twitterUser[' + j + ']=' + encodeURIComponent( elem[i].value ) + "&"; 
+                j++;
+            }
+        }
+
+        string += 'shortener=' + document.getElementsByName('postdata[shortener]')[0].value;
+
+        callJSONP( string );
+
+        if ( event.preventDefault ) event.preventDefault();
         //document.getElementById("submitSocial").
         //event.returnValue = false;
+
     }
 
 /*Event.observe('socialRouterForm', 'submit', function(event) {

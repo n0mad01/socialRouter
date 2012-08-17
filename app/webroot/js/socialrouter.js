@@ -1,9 +1,6 @@
 /**
- * Adrian Soluch 2012
- * n0mad_10@yahoo.de
+ *  @author Adrian Soluch adrian@soluch.at
  */
-
-//alert('TEST');
 
 var socialrouter = (function(){
 
