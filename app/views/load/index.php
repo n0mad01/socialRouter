@@ -38,12 +38,14 @@ var socialrouter = (function(){
     var theDiv,
         script,
         textarea,
+        charCountBox,
         content;
 
     var createDiv = function() {
 
         if(document.getElementById('socialrouterMaindiv') !== null) {
             removeSR(); // if div already exists - remove
+            return;
         }
 
         theDiv = document.createElement("div");
@@ -64,6 +66,8 @@ var socialrouter = (function(){
         textarea.value = document.title + "\n" + textarea.value; //content //document.location.href;
         charCountSR();
 
+        theDiv.onmousedown = dragDown;
+
         callListeners();
     }
 
@@ -76,8 +80,8 @@ var socialrouter = (function(){
 
     var callJSONP = function( string )
     {
-        //JSONPurl = 'http://sr2.soluch.at/load/delegateMessage/?callback=socialrouter.callback&' + encodeURIComponent( string );
-        JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP/?callback=socialrouter.callback&' + string ;
+        //JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP?callback=socialrouter.callback';
+        JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP?callback=socialrouter.callback&' + string ;
         //alert(JSONPurl);
 
         script = document.createElement('script');
@@ -85,22 +89,14 @@ var socialrouter = (function(){
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-/*    var parseRequest = function(response) {
-        // inject the new elements
-        theDiv.innerHTML = response.content;
- 
-        theURL = document.getElementById('sr_theURL');
-        theURL.value = document.title + "\n" + response.shorturl  //document.location.href;
+    var parseRequest = function(response) {
 
-        otherContent = document.getElementById('otherContent');
-        //otherContent.innerHTML = dump(response.cookies);
-        //otherContent.innerHTML = response.token;
-        otherContent.innerHTML = response.cookies.logintoken;
-        //otherContent.innerHTML = dump(response.cookies);
-
-        // Close button
-        //document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
-    }*/
+        document.getElementById('socialRouter_main').innerHTML = response.html;
+        
+        //for (var username in response.user ) {
+            //alert( username );
+        //}
+    }
 
     var charCountSR = function() {
         //if(textarea.value.length > 140) {
@@ -121,50 +117,75 @@ var socialrouter = (function(){
         var string = "", 
             elem = document.getElementsByName('postdata[twitterUser][]'),
             l = elem.length,
-            j = 0;
+            users = '';
+            //j = 0;
 
-        string += 'textarea=' + encodeURIComponent( document.getElementById("sr_textarea").value ) + '&';
-
+        string += 'textarea=' + encodeURIComponent( document.getElementById("sr_textarea").value );
+        string += '&twitterUsers=';
         
         for( i=0; i<l; i++) {
             if( elem[i].checked == true ) {
-                //string += 'twitterUser[' + j + ']=' + elem[i].value + "&"; 
-                string += 'twitterUser[' + j + ']=' + encodeURIComponent( elem[i].value ) + "&"; 
-                j++;
+                //string += 'twitterUser[' + j + ']=' + encodeURIComponent( elem[i].value ) + "&"; 
+                users += encodeURIComponent( elem[i].value ) + '|';
+                //j++;
             }
         }
+        if( users != '' ) {
+            string += users.slice(0, -1);
+            string += '&shortener=' + document.getElementsByName('postdata[shortener]')[0].value;
 
-        string += 'shortener=' + document.getElementsByName('postdata[shortener]')[0].value;
-
-        callJSONP( string );
+            callJSONP( string );
+        }
+        else {
+            alert('Please choose at least one Twitter Account!');
+        }
 
         if ( event.preventDefault ) event.preventDefault();
-        //document.getElementById("submitSocial").
-        //event.returnValue = false;
-
+        event.returnValue = false;
     }
-
-/*Event.observe('socialRouterForm', 'submit', function(event) {
-    $('socialRouterForm').request({
-        onFailure: function() { alert('f'); },
-        onSuccess: function(t) {
-            //$('result').update(t.responseText);
-            alert('w');
-        }
-    });
-    Event.stop(event); // stop the form from submitting
-});*/
-
 
     return {
         init : createDiv,
-        //callback : parseRequest
+        callback : parseRequest
     }
 }());
 
 socialrouter.init();
 
 
+function dragDown(e){
+  e = (e ? e : event);
+  //var top  = (isNaN(parseInt(this.style.top))  ? 0 : this.style.top);
+  var top  = (isNaN(parseInt(this.style.top))  ? 0 : this.style.top);
+  var left = (isNaN(parseInt(this.style.left)) ? 0 : this.style.left);
+//alert(this.style.bottom);
+  var y = Math.abs(parseInt(top) - e.clientY);
+  var x = Math.abs(parseInt(left) - e.clientX);
+
+  var oldCursor = this.style.cursor;
+  this.style.cursor = "move";
+
+  var oldMousemove = document.onmousemove;
+  var oldMouseup   = document.onmouseup;
+  document.onmousemove = dragMakeMoveFunc(this, y, x);
+  document.onmouseup   = dragMakeStopFunc(this, oldMousemove, oldMouseup, oldCursor);
+}
+
+function dragMakeMoveFunc(elem, y, x){
+  return function(e){
+    e = (e ? e : event);
+    elem.style.top  = (e.clientY - y) + 'px';
+    elem.style.left = (e.clientX - x) + 'px';
+  }
+}
+
+function dragMakeStopFunc(elem, oldMousemove, oldMouseup, oldCursor){
+  return function(){
+    document.onmousemove  = oldMousemove;
+    document.onmouseup    = oldMouseup;
+    elem.style.cursor     = oldCursor;
+  }
+}
 
 // HELPER FUNCTIONS
 // OBJECT DUMPER HELPER

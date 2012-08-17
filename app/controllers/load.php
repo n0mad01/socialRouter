@@ -106,24 +106,61 @@ class Load extends Controller {
         $this->renderDefault = FALSE;
 
         if(isset($_SESSION['__sessiondata']['loggedin']) && $_SESSION['__sessiondata']['loggedin']) {
-            dumper($_GET);
+
+            //dumper($_GET);
+            $twitterUsers = explode('|', $_GET['twitterUsers']);
+            if( ! empty( $twitterUsers[0] ) ) {
+
+                $reply = array();
+
+                $this->initDB();
+                try {
+                    $inQuery = implode( ',', array_fill(0, count($twitterUsers), '?') );
+
+                    $stmt = $this->DB->prepare("SELECT username, token, token_secret FROM socialaccounts WHERE user_id = ? AND service = 'twitter' AND username IN($inQuery)");
+                    $stmt->bindValue( 1, $_SESSION['__sessiondata']['user_id'] );
+                    foreach ($twitterUsers as $k => $id) {
+                        $stmt->bindValue(($k+2), $id);
+                    }
+
+                    $stmt->execute();
+                    $row = $stmt->fetchAll();
+
+                    //dumper( $row );
+                }
+                catch (Exception $e) {
+
+                    dumper($e->getMessage());
+                    return FALSE;
+                }
+            }
+
+            try {
+                $reply['html'] = '';
+                $this->twitter = new Services_Twitter();
+
+                foreach($row as $r) {
+
+                    $oauth = new HTTP_OAuth_Consumer(CONSUMER_KEY, CONSUMER_SECRET, $r['token'], $r['token_secret']);
+                    $this->twitter->setOAuth($oauth);
+
+//dumper($r['username']);
+                    //dumper( urldecode( $_GET['textarea'] ) );
+                    //$msg = $this->twitter->statuses->update( urldecode( $_GET['textarea'] ) );
+                    //if( $msg ) {
+                        //dumper($msg);
+                        //$reply['html'] = '<div>OK</div>';
+                        $reply['html'] .= '<span>' . $r['username'] . ' - tweeted <img src="data:image/gif;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAALCAYAAABLcGxfAAABXklEQVQoz2NgQAN6vX5wdvb2NGYY231ehEPI8rhzKIqN+gPg7LxdGXDF/oujPWLWJh4JXha7Hq7AYkoQhKEuxFC4JxOu2GdhlGfC+qSnMWsSjtlMC1FhsJ0ewmw0wZ8RLOugxFCEpNh7YVRAyqaUd4kbku47zgw1QHEO0ErW1C0prEiKIzO2pn1L25L6Beh+J7hC3V4/IXSP+y6KSgR6+FfW9rT/AUui42DiJ370MjA4zgrt8VoYGeW7OFqEwVCaw29xdFbuzvRf+bsy/ocsj21ANki51Qto2uKoruwd6a+SN6WcCVsZNxcYOh+K9mb9j12buBioBu5Ei8mBEIbb3Ail1M0pVwt2Z/4v25/9v2Rf9v+UzSknJOpc5WCKnWeHMaK42WNeRFTh7syPVYdy/wNte2w3I9QNJpeyOZmRIccKzZf2ChyJG5K3AZ3zP3pNwgSY8Kv/cxn4yhxRlAIANjqCIshinqwAAAAASUVORK5CYII=" alt="base64 check"></span><br />';
+                        //$reply['user'][$r['username']] = 'ok';
+                    //}
+                }
+            }
+            catch (Services_Twitter_Exception $e) { dumper($e->getMessage()); }
+
+            echo $_GET['callback'] . '('.json_encode($reply).')';
+            //echo $_GET['callback'] . '()';
         }
     }
-
-function parse_utf8_url($url)
-{
-    static $keys = array('scheme'=>0,'user'=>0,'pass'=>0,'host'=>0,'port'=>0,'path'=>0,'query'=>0,'fragment'=>0);
-    if (is_string($url) && preg_match(
-            '~^((?P<scheme>[^:/?#]+):(//))?((\\3|//)?(?:(?P<user>[^:]+):(?P<pass>[^@]+)@)?(?P<host>[^/?:#]*))(:(?P<port>\\d+))?' .
-            '(?P<path>[^?#]*)(\\?(?P<query>[^#]*))?(#(?P<fragment>.*))?~u', $url, $matches))
-    {
-        foreach ($matches as $key => $value)
-            if (!isset($keys[$key]) || empty($value))
-                unset($matches[$key]);
-        return $matches;
-    }
-    return false;
-}
 
     public function delegateMessage()
     {

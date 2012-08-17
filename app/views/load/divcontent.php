@@ -82,28 +82,30 @@ $css
 $mail
 <div id="sr_closeButton" class="sr_topButtons" >close x</div>
 
-<form id="socialRouterForm" name="socialRouterForm" accept-charset="utf-8" action="http://sr2.soluch.at/load/delegateMessage/" method="post" target="_blank" >
-    <textarea id="sr_textarea" name="postdata[message]" cols="35" rows="3" >
-
-$data->shorturl
-
-</textarea>
-
-$shortenerForm
-
-<div style="float:right;">chars used: <span id="sr_charCount" style="color:#D94432;font-weight:bold;"></span></div>
-<hr />
-    <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
-    <a href="http://sr2.soluch.at/twitter/add/">add twitter account</a><br />
-
-    $twitterUserForm
-
-    <br />
-	<input type="submit" value="Submit" id="submitSocial" />
-</form>
-
-
-<div id="otherContent">
+<div id="socialRouter_main">
+    <form id="socialRouterForm" name="socialRouterForm" accept-charset="utf-8" action="http://sr2.soluch.at/load/delegateMessage/" method="post" target="_blank" >
+        <textarea id="sr_textarea" name="postdata[message]" cols="35" rows="3" >
+    
+    $data->shorturl
+    
+    </textarea>
+    
+    $shortenerForm
+    
+    <div style="float:right;">chars used: <span id="sr_charCount" style="color:#D94432;font-weight:bold;"></span></div>
+    <hr />
+        <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
+        <a href="http://sr2.soluch.at/twitter/add/">add twitter account</a><br />
+    
+        $twitterUserForm
+    
+        <br />
+    	<input type="submit" value="Submit" id="submitSocial" />
+    </form>
+    
+    
+    <div id="otherContent">
+    </div>
 </div>
 
 <div style="width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
@@ -196,6 +198,14 @@ font-weight:bold;
 position:absolute;
 top:5px;
 right:5px;
+padding-left:4px;
+padding-right:4px;
+border-radius:5px; 
+-moz-border-radius:5px; 
+-webkit-border-radius:5px; 
+background-color:#6F6F6F;
+color:#FFF;
+cursor:pointer;cursor:hand;
 }
 
 </style>
