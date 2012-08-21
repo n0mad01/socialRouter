@@ -3,11 +3,12 @@
 <?php
 require(__DIR__ . '/divcontent.php');
 
+$options = new stdClass;
 if( isset($this->twitterAccounts) ) :
-    $options = new stdClass;
     $options->shorturl = $this->referer;
     $options->twitter = $this->twitterAccounts;
     $options->shortener = $this->shortenerAccounts;
+else :
 endif;
 
 $content = Html::getHTML($options);
@@ -46,8 +47,10 @@ var socialrouter = (function(){
         charCountBox = document.getElementById('sr_charCount');
         //content = textarea.value;
 
-        textarea.value = document.title + "\n" + textarea.value; //content //document.location.href;
-        charCountSR();
+        if( textarea ) {
+            textarea.value = document.title + "\n" + textarea.value; //content //document.location.href;
+            charCountSR();
+        }
 
         theDiv.onmousedown = dragDown;
 
@@ -63,9 +66,7 @@ var socialrouter = (function(){
 
     var callJSONP = function( string )
     {
-        //JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP?callback=socialrouter.callback';
         JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP?callback=socialrouter.callback&' + string ;
-        //alert(JSONPurl);
 
         script = document.createElement('script');
         script.setAttribute( 'src', JSONPurl );
@@ -76,9 +77,6 @@ var socialrouter = (function(){
 
         document.getElementById('socialRouter_main').innerHTML = response.html;
         
-        //for (var username in response.user ) {
-            //alert( username );
-        //}
     }
 
     var charCountSR = function() {

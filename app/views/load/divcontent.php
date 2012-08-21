@@ -25,27 +25,25 @@ class Html extends Load {
     /**
      *  HTML for not logged in users
      */
-    private function notLoggendIn($css)
+    private function notLoggendIn( $css )
     {
-        return <<<HTMLSTUFF
-$css
-<a href="http://sr2.soluch.at" target="_blank" id="sr_title" class="" >SocialRouter</a>
-<span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.5.2</span>
-<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
-<div id="sr_closeButton" class="sr_topButtons" >close x</div>
+        $html = Html::header( $css, '' );
+        $html .= <<<HTMLSTUFF
+
 You have to log in in order to use SocialRouter!
 <div id="otherContent">
 </div>
-
-<div style="width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
-<span style="float:right;">Adrian Soluch 2012</span>
 HTMLSTUFF;
+
+        $html .= Html::footer();
+
+        return $html;
     }
 
     /**
      *  HTML for logged in users
      */
-    private function loggendIn($css, $data)
+    private function loggendIn( $css, $data )
     {
         $mail = '';
         if(isset($_SESSION['__sessiondata']['email'])) :
@@ -71,7 +69,8 @@ HTMLSTUFF;
             endif;
         endif;
 
-        $html = <<<HTMLSTUFF
+        $html = Html::header( $css, $mail );
+/*        $html = <<<HTMLSTUFF
 $css
 <a href="http://sr2.soluch.at" target="_blank" id="sr_title" class="" >
 <img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAACvUlEQVQ4y3VU7U4aQRRdEn7wLPoU/uZnw67SiLuLgIAuO7M0RIPWaqElbaEomph+bZvQNqk1pf1h/WirtvgMPIKPICHM7Z3ZARZrN7mZ2fk4c86dc0dR5KcZdoC3UYOGNIOGMVzVoB2MLvavZd/lc2o8H+Rrp+Wef76ISSZVkxyqBgEemmxFmKN/zSQt1bQnxjZruhXwWntKNeyrwSb/Rv+/NjrgSsU9gpkumUVMe1JMeIv6GEwyYShFtAg0HMPoDcEMOilA7szREA5IOVSA+Jlo5hAIfJIZyutLlodqzAopOBHmi/nJAyZ302tgPfsOhlMby1H20QGk7r+TY47HVhxEwwq/Cb/+KIJkNj8A2f4N2fIBJFbfQKL4CpIIYFePwaoegX6vPmInWBNXEddqDkFYevMjkNopJNfewmLlGzg7lwh6DrTRhtSaC5nSPuRw3iw0UK4zSHwH/YM+QaBoagXSG03I77ZhsbwPs9l1lOECqf9EJkdAnp9AzHrIzHwN8o0LcLbPQCeVAVCXA13zHFli8Q8gW2fI6ATs2jHkUIpd/4X9EzGee3ooxjhDguP8EHmrXQVlCWl8YaL4EuZX9hDwFJzdSyGLS6Jb56LvNP4A3Wlj0r+ATp8wC4E9RrTDb831gC4glnsMMbsimCVWX8P88p5I9HzxhfiPF3ZYtvwZMgjEE71Y+SqTTV1F1A7+LFVaMGuVGQfLlj4JC3ieGTdkHJO8sPGeb2YLD5qDNWFlRneCuKg1k1xGTzjcsWzOKsES0tadqs+QFNJ4Y6n1pvQO6U0nCrxtadNOUJYIHZYIRh81M8+glPkMyXym7cl5rDfqFW9EzwXkMzLlA/tv9Y+KFkFM4hWtQQI3nhFkZtIbzwiVMQbcQskTt75Fmu6hRuMkxGtHlA46lntERkfV8YZ1Eo4kLe9hiztDJn8BOjN4ZVpamhcAAAAASUVORK5CYII=" alt="logo" width="18" height="18" style="border:none;position:absolute;top:8px;" />
@@ -81,7 +80,8 @@ $css
 <div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
 $mail
 <div id="sr_closeButton" class="sr_topButtons" >close x</div>
-
+*/
+        $html .= <<<HTMLSTUFF
 <div id="socialRouter_main">
     <form id="socialRouterForm" name="socialRouterForm" accept-charset="utf-8" action="http://sr2.soluch.at/load/delegateMessage/" method="post" target="_blank" >
         <textarea id="sr_textarea" name="postdata[message]" cols="35" rows="3" >
@@ -107,14 +107,45 @@ $mail
     <div id="otherContent">
     </div>
 </div>
+HTMLSTUFF;
 
+        $html .= Html::footer();
+    
+        return $html;
+    }
+
+    /**
+     * Header
+     */
+    private function header( $css, $mail = NULL )
+    {
+        $html = <<<HTMLSTUFF
+$css
+<a href="http://sr2.soluch.at" target="_blank" id="sr_title" class="" >
+<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAACvUlEQVQ4y3VU7U4aQRRdEn7wLPoU/uZnw67SiLuLgIAuO7M0RIPWaqElbaEomph+bZvQNqk1pf1h/WirtvgMPIKPICHM7Z3ZARZrN7mZ2fk4c86dc0dR5KcZdoC3UYOGNIOGMVzVoB2MLvavZd/lc2o8H+Rrp+Wef76ISSZVkxyqBgEemmxFmKN/zSQt1bQnxjZruhXwWntKNeyrwSb/Rv+/NjrgSsU9gpkumUVMe1JMeIv6GEwyYShFtAg0HMPoDcEMOilA7szREA5IOVSA+Jlo5hAIfJIZyutLlodqzAopOBHmi/nJAyZ302tgPfsOhlMby1H20QGk7r+TY47HVhxEwwq/Cb/+KIJkNj8A2f4N2fIBJFbfQKL4CpIIYFePwaoegX6vPmInWBNXEddqDkFYevMjkNopJNfewmLlGzg7lwh6DrTRhtSaC5nSPuRw3iw0UK4zSHwH/YM+QaBoagXSG03I77ZhsbwPs9l1lOECqf9EJkdAnp9AzHrIzHwN8o0LcLbPQCeVAVCXA13zHFli8Q8gW2fI6ATs2jHkUIpd/4X9EzGee3ooxjhDguP8EHmrXQVlCWl8YaL4EuZX9hDwFJzdSyGLS6Jb56LvNP4A3Wlj0r+ATp8wC4E9RrTDb831gC4glnsMMbsimCVWX8P88p5I9HzxhfiPF3ZYtvwZMgjEE71Y+SqTTV1F1A7+LFVaMGuVGQfLlj4JC3ieGTdkHJO8sPGeb2YLD5qDNWFlRneCuKg1k1xGTzjcsWzOKsES0tadqs+QFNJ4Y6n1pvQO6U0nCrxtadNOUJYIHZYIRh81M8+glPkMyXym7cl5rDfqFW9EzwXkMzLlA/tv9Y+KFkFM4hWtQQI3nhFkZtIbzwiVMQbcQskTt75Fmu6hRuMkxGtHlA46lntERkfV8YZ1Eo4kLe9hiztDJn8BOjN4ZVpamhcAAAAASUVORK5CYII=" alt="logo" width="18" height="18" style="border:none;position:absolute;top:8px;" />
+<span style="margin-left:22px;">SocialRouter</span>
+</a>
+<span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.6.5</span>
+<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
+$mail
+<div id="sr_closeButton" class="sr_topButtons" >close x</div>
+HTMLSTUFF;
+    
+        return $html;
+    }
+
+    /**
+     * Footer
+     */
+    private function footer()
+    {
+        $html = <<<HTMLSTUFF
 <div style="width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
 <span style="float:right;font-size:9px;color:#C1C1C1;">Adrian Soluch 2012</span>
 HTMLSTUFF;
     
         return $html;
-        //return str_replace("\n", '', $html);
-    
+
     }
 
     /**
