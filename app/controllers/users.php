@@ -54,7 +54,7 @@ class Users extends Controller {
             $this->postdata['password'] = $_GET['password'];
         }
 
-        if(isset($this->postdata)) {
+        if( isset( $this->postdata ) ) {
 
             $email = $this->postdata['email'];
             $fromDB = $this->getUserByEmail($email);
@@ -62,7 +62,9 @@ class Users extends Controller {
             if(empty($fromDB)) {
 
                 $ret['invalid']['notfound'] = _('The user/password combination is wrong!');
-                return $ret;
+                if( empty( $jsonp ) ) {
+                    return $ret;
+                }
             } else {
 
                 $pass = $this->hashPassword($this->postdata['password']);

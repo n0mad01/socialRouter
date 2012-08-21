@@ -1,4 +1,5 @@
-/* vim:set ft=css: */
+/* vim:set ft=javascript: */
+/* //vim:set ft=css: */
 
 <?php
 
@@ -60,11 +61,11 @@ HTMLSTUFF;
         endif;
 
         $twitterUserForm = '';
-        $shortenerForm = 'URL shortener:';
+        $shortenerForm = 'URL shortener: ';
         if($data) :
             if(isset($data->twitter) && $data->twitter) :
                 foreach($data->twitter as $tw) :
-                    $twitterUserForm .= '<input type="checkbox" name="postdata[twitterUser][]" value="' . $tw['username'] . '" ><span style="margin-right:3px;">' . $tw['username'] . '</span>';// . '<br />';
+                    $twitterUserForm .= '<input type="checkbox" name="postdata[twitterUser][]" value="' . $tw['username'] . '" style="float:none;" ><span style="margin-right:3px;">' . $tw['username'] . '</span>';// . '<br />';
                 endforeach;
             endif;
             if(isset($data->shortener) && $data->shortener) :
@@ -236,8 +237,13 @@ border-radius:5px;
 -webkit-border-radius:5px; 
 background-color:#6F6F6F;
 color:#FFF;
+text-shadow:#000 1px 1px 0;
 cursor:pointer;cursor:hand;
 }
+    #socialrouterMaindiv div#sr_closeButton:hover {
+    background-color:#868686;
+    text-shadow:#2F2F2F 1px 1px 0;
+    }
 
 </style>
 CSS;
