@@ -1,18 +1,8 @@
 /* vim:set ft=javascript: */
 
 <?php
-//header('Content-Type: text/javascript; charset=utf8');
-//header('Access-Control-Allow-Origin: http://www.soluch.at/');
-//header('Access-Control-Max-Age: 3628800');
-//header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-
-//$content = file_get_contents(__DIR__ . '/divcontent.php');
 require(__DIR__ . '/divcontent.php');
 
-//dumper($this->referer);die();
-//$html = new Html;
-//$content = $html->getHTML();
-//$options = '';
 if( isset($this->twitterAccounts) ) :
     $options = new stdClass;
     $options->shorturl = $this->referer;
@@ -23,13 +13,6 @@ endif;
 $content = Html::getHTML($options);
 
 $cookies = $_COOKIE;
-
-/*$data = array(
-    'content'=>$content,
-    'cookies'=>$cookies,
-    'shorturl'=>$this->referer
-);*/
-//echo $_GET['callback'] . '(' . json_encode($data) . ');';
 ?>
 
 // JavaScript
@@ -118,16 +101,13 @@ var socialrouter = (function(){
             elem = document.getElementsByName('postdata[twitterUser][]'),
             l = elem.length,
             users = '';
-            //j = 0;
 
         string += 'textarea=' + encodeURIComponent( document.getElementById("sr_textarea").value );
         string += '&twitterUsers=';
         
         for( i=0; i<l; i++) {
             if( elem[i].checked == true ) {
-                //string += 'twitterUser[' + j + ']=' + encodeURIComponent( elem[i].value ) + "&"; 
                 users += encodeURIComponent( elem[i].value ) + '|';
-                //j++;
             }
         }
         if( users != '' ) {
@@ -152,39 +132,43 @@ var socialrouter = (function(){
 
 socialrouter.init();
 
+// DRAG N DROP
+var dragDown = function(e)
+{
+    // fixate height
+    var h = this.clientHeight;
+    this.style.height = ( h - 10 ) + 'px';
 
-function dragDown(e){
-  e = (e ? e : event);
-  //var top  = (isNaN(parseInt(this.style.top))  ? 0 : this.style.top);
-  var top  = (isNaN(parseInt(this.style.top))  ? 0 : this.style.top);
-  var left = (isNaN(parseInt(this.style.left)) ? 0 : this.style.left);
-//alert(this.style.bottom);
-  var y = Math.abs(parseInt(top) - e.clientY);
-  var x = Math.abs(parseInt(left) - e.clientX);
+    e = (e ? e : event);
+    var top  = ( isNaN( parseInt( this.offsetTop ) )  ? 0 : this.offsetTop );
+    var left = ( isNaN( parseInt( this.offsetLeft ) ) ? 0 : this.offsetLeft );
 
-  var oldCursor = this.style.cursor;
-  this.style.cursor = "move";
+    var y = Math.abs( parseInt( top ) - e.clientY );
+    var x = Math.abs( parseInt( left ) - e.clientX );
 
-  var oldMousemove = document.onmousemove;
-  var oldMouseup   = document.onmouseup;
-  document.onmousemove = dragMakeMoveFunc(this, y, x);
-  document.onmouseup   = dragMakeStopFunc(this, oldMousemove, oldMouseup, oldCursor);
+    var oldCursor = this.style.cursor;
+    this.style.cursor = 'move';
+
+    var oldMousemove = document.onmousemove;
+    var oldMouseup   = document.onmouseup;
+    document.onmousemove = dragMakeMoveFunc(this, y, x);
+    document.onmouseup   = dragMakeStopFunc(this, oldMousemove, oldMouseup, oldCursor);
 }
 
 function dragMakeMoveFunc(elem, y, x){
-  return function(e){
-    e = (e ? e : event);
-    elem.style.top  = (e.clientY - y) + 'px';
-    elem.style.left = (e.clientX - x) + 'px';
-  }
+    return function(e){
+        e = (e ? e : event);
+          elem.style.top  = (e.clientY - y) + 'px';
+          elem.style.left = (e.clientX - x) + 'px';
+    }
 }
 
 function dragMakeStopFunc(elem, oldMousemove, oldMouseup, oldCursor){
-  return function(){
-    document.onmousemove  = oldMousemove;
-    document.onmouseup    = oldMouseup;
-    elem.style.cursor     = oldCursor;
-  }
+    return function(){
+        document.onmousemove  = oldMousemove;
+        document.onmouseup    = oldMouseup;
+        elem.style.cursor     = oldCursor;
+    }
 }
 
 // HELPER FUNCTIONS
