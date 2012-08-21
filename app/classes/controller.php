@@ -30,6 +30,8 @@ class Controller {
     protected $twitterAccounts;
     
     protected $renderDefault = TRUE;
+
+    protected $renderView = TRUE;   // whether or not render the standard view
     
     protected $render = array();  // other view file to render
     
@@ -203,7 +205,9 @@ echo 'RETRETE';
                 /** 
                  *  load the Classes' views
                  */
-                $this->loadViews($class, $method);
+                if( $this->renderView ) {
+                    $this->loadViews($class, $method);
+                }
     
             } else {
                 // Method not found

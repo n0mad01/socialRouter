@@ -39,7 +39,6 @@ var socialrouter = (function(){
         //theDiv.innerHTML = "socialrouterMaindiv";
         document.body.appendChild(theDiv)
 
-        //theDiv.innerHTML = 'SOCIALROUTERB';
         theDiv.innerHTML = '<?php echo $content; ?>';
         
         // SET GLOBALS*
@@ -59,13 +58,23 @@ var socialrouter = (function(){
 
     var callListeners = function() {
         document.getElementById("sr_closeButton").addEventListener("click", removeSR, false);
-        textarea.onkeyup = charCountSR;
 
-        document.getElementById("submitSocial").addEventListener("click", submitSocial, false);
+        if( textarea ) { 
+            textarea.onkeyup = charCountSR;
+        }
+
+        var submitSoc = document.getElementById("submitSocial");
+        if( submitSoc ) {
+            submitSoc.addEventListener("click", submitSocial, false);
+        }
+
+        var submitLog = document.getElementById("submitLogin");
+        if( submitLog ) {
+            submitLog.addEventListener("click", submitLogin, false);
+        }
     }
 
-    var callJSONP = function( string )
-    {
+    var callJSONP = function( string ) {
         JSONPurl = 'http://sr2.soluch.at/load/delegateMessageJSONP?callback=socialrouter.callback&' + string ;
 
         script = document.createElement('script');
@@ -73,10 +82,27 @@ var socialrouter = (function(){
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-    var parseRequest = function(response) {
+    var loginJSONP = function( string ) {
+        JSONPurl = 'http://sr2.soluch.at/users/login/jsonp?callback=socialrouter.logincallback' + string;
+
+        script = document.createElement('script');
+        script.setAttribute( 'src', JSONPurl );
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    var parseRequest = function( response ) {
 
         document.getElementById('socialRouter_main').innerHTML = response.html;
         
+    }
+
+    var parseLogin = function( response ) {
+        if( response.login ) {
+            removeSR();
+        }
+        else {
+            alert('Please try again!');
+        }
     }
 
     var charCountSR = function() {
@@ -92,8 +118,6 @@ var socialrouter = (function(){
     }
 
     var submitSocial = function( event ) {
-        
-            
         // get data from form & put GET string together
         var string = "", 
             elem = document.getElementsByName('postdata[twitterUser][]'),
@@ -122,9 +146,23 @@ var socialrouter = (function(){
         event.returnValue = false;
     }
 
+    // JSONP Login
+    var submitLogin = function( event ) {
+        var string = ""; 
+        string += '&email=' + document.getElementById('socialrouter_email').value;
+        string += '&password=' + document.getElementById('socialrouter_password').value;
+//alert(string);
+
+        loginJSONP( string );
+
+        if ( event.preventDefault ) event.preventDefault();
+        event.returnValue = false;
+    }
+
     return {
         init : createDiv,
-        callback : parseRequest
+        callback : parseRequest,
+        logincallback : parseLogin
     }
 }());
 

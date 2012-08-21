@@ -42,8 +42,18 @@ class Users extends Controller {
     /**
      *  User login  / Authentication
      */
-    public function login()
+    public function login( $jsonp = NULL )
     {
+        if( ! empty( $jsonp ) ) {
+            $GLOBALS['renderingTime'] = FALSE;
+            $GLOBALS['renderPiwik'] = FALSE;
+            $this->renderDefault = FALSE;
+            $this->renderView = FALSE;
+
+            $this->postdata['email'] = $_GET['email'];
+            $this->postdata['password'] = $_GET['password'];
+        }
+
         if(isset($this->postdata)) {
 
             $email = $this->postdata['email'];
@@ -88,11 +98,21 @@ class Users extends Controller {
                         return FALSE;
                     }
 
-                    // redirect
-                    header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
-                
+                    if( ! empty( $jsonp ) ) {
+                        $reply['login'] = TRUE;
+                        echo $_GET['callback'] . '('.json_encode( $reply ).')';
+                        return TRUE;
+                    }
+                    else {
+                        // redirect
+                        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/');
+                    }
                 }
             }
+        }
+        if( ! empty( $jsonp ) ) {
+            $reply['login'] = FALSE;
+            echo $_GET['callback'] . '('.json_encode( $reply ).')';
         }
     }
 
