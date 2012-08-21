@@ -144,21 +144,24 @@ class Load extends Controller {
                     $oauth = new HTTP_OAuth_Consumer(CONSUMER_KEY, CONSUMER_SECRET, $r['token'], $r['token_secret']);
                     $this->twitter->setOAuth($oauth);
 
-                    //$msg = $this->twitter->statuses->update( urldecode( $_GET['textarea'] ) );
-                    $msg = TRUE;
+                    $msg = $this->twitter->statuses->update( urldecode( $_GET['textarea'] ) );
+                    //$msg = TRUE;
                     if( $msg ) {
-                        //dumper($msg);
+                        //echo $msg;die();
+                        //dumper($msg);die();
+                        
                         $reply['html'] .= '<span>' . $r['username'] . ' - tweeted <img src="data:image/gif;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAALCAYAAABLcGxfAAABXklEQVQoz2NgQAN6vX5wdvb2NGYY231ehEPI8rhzKIqN+gPg7LxdGXDF/oujPWLWJh4JXha7Hq7AYkoQhKEuxFC4JxOu2GdhlGfC+qSnMWsSjtlMC1FhsJ0ewmw0wZ8RLOugxFCEpNh7YVRAyqaUd4kbku47zgw1QHEO0ErW1C0prEiKIzO2pn1L25L6Beh+J7hC3V4/IXSP+y6KSgR6+FfW9rT/AUui42DiJ370MjA4zgrt8VoYGeW7OFqEwVCaw29xdFbuzvRf+bsy/ocsj21ANki51Qto2uKoruwd6a+SN6WcCVsZNxcYOh+K9mb9j12buBioBu5Ei8mBEIbb3Ail1M0pVwt2Z/4v25/9v2Rf9v+UzSknJOpc5WCKnWeHMaK42WNeRFTh7syPVYdy/wNte2w3I9QNJpeyOZmRIccKzZf2ChyJG5K3AZ3zP3pNwgSY8Kv/cxn4yhxRlAIANjqCIshinqwAAAAASUVORK5CYII=" alt="base64 check"></span><br />';
                         //$reply['user'][$r['username']] = 'ok';
                     }
                 }
-                $reply['html'] .= '<br />';
-                $reply['html'] .= '<div style="background-color:#00A0C5;padding:3px;color:#FFF;">more tweets</div>';
             }
             catch( Services_Twitter_Exception $e ) {
-                dumper( $e->getMessage() );
+                //dumper( $e->getMessage() );
+                $reply['html'] .= '<span>' . $r['username'] . ' - not sent - ' . $e->getMessage() . '</span><br />';
             }
 
+            $reply['html'] .= '<br /><div class="socialrouter_button" style="background-color:#00A0C5;" onclick="socialrouter.reOpen();">again</div>';
+            $reply['html'] .= '<br /><div class="socialrouter_button" style="background-color:#926357;" onclick="socialrouter.close();">close</div>';
             echo $_GET['callback'] . '('.json_encode($reply).')';
         }
     }

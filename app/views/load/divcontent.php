@@ -245,6 +245,14 @@ cursor:pointer;cursor:hand;
     text-shadow:#2F2F2F 1px 1px 0;
     }
 
+.socialrouter_button {
+width:30%;
+padding:3px;
+text-align:center;
+color:#FFF;
+cursor:pointer;cursor:hand;
+}
+
 </style>
 CSS;
 

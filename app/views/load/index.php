@@ -93,17 +93,20 @@ var socialrouter = (function(){
     var parseRequest = function( response ) {
 
         document.getElementById('socialRouter_main').innerHTML = response.html;
-        
     }
 
     var parseLogin = function( response ) {
         if( response.login ) {
-            removeSR();
-            document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';
+            reOpen();
         }
         else {
             alert('Please try again!');
         }
+    }
+
+    var reOpen = function() {
+        removeSR();
+        document.body.appendChild(document.createElement('script')).src='http://sr2.soluch.at/load';
     }
 
     var charCountSR = function() {
@@ -152,7 +155,6 @@ var socialrouter = (function(){
         var string = ""; 
         string += '&email=' + document.getElementById('socialrouter_email').value;
         string += '&password=' + document.getElementById('socialrouter_password').value;
-//alert(string);
 
         loginJSONP( string );
 
@@ -163,7 +165,9 @@ var socialrouter = (function(){
     return {
         init : createDiv,
         callback : parseRequest,
-        logincallback : parseLogin
+        logincallback : parseLogin,
+        reOpen : reOpen,
+        close : removeSR
     }
 }());
 
