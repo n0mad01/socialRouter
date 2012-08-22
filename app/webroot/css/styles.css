@@ -3,6 +3,14 @@
 /* ============================== */
 
 /* Layout for desktop version */
+/* 
+colorscheme :  beach glass
+#FFF6C9
+#C8E8C7
+#A4DEAB
+#85CC9F
+#499E8D
+*/
 
 /*@font-face {
 font-family: 'averia';
@@ -43,12 +51,12 @@ a {
 text-decoration: none;
 color: #005698;
 font-weight: bold;
-border-bottom: 1px solid #adadad;
+/*border-bottom: 1px solid #adadad;*/
 }
 
 a:hover {
 color:#000;
-border-bottom:none;
+/*border-bottom:none;*/
 }
 
 a img {
@@ -72,17 +80,17 @@ color:#D66767;
 /*height:70px;*/
 /*background:url("/app/webroot/images/headerbg.jpg") repeat scroll center top #E5EDF8;*/
 /*background-color:#D1E751;*/
-background-color:#202B32;
+background-color:#85CC9F;
 padding:20px 0;
 }
-.header #logo {
+.header #sitelogo {
 float:left;
 margin:12px 14px 0 0;
 width:70px;
 height:45px;
 background:url("/app/webroot/images/spaceinvader.png") no-repeat scroll 0 0;/* green*/
 }
-.header h1 {
+/*.header h1 {
 float:left;
 position:relative;
 top:8px;
@@ -97,7 +105,7 @@ float:left;
 position:relative;
 top:38px;
 left:-80px;
-}
+}*/
 
 /* HEADER - ACCOUNT - ACCOUNTBOX */
 #accountBox {
@@ -205,7 +213,7 @@ margin-top:-1px;
 /* FOOTER */
 .footer {
 height:250px;
-background-color:#696758;
+background-color:#499E8D;
 color:#FBFBFB;
 }
 

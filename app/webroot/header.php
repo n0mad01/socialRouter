@@ -31,7 +31,8 @@
 <div class="container header">
     <div class="row">
         <div class="eightcol">
-            <a href="/">LOGO</a>
+            <a href="/" id="sitelogo"></a>
+            <a href="/" id="">Socialrouter</a>
                 <?php //echo $_SERVER['HTTP_HOST']; ?>
                 <?php //echo $_SERVER['REQUEST_URI']; ?>
         </div>
