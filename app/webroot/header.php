@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="<?php echo CSS_DIR; ?>mobile.css" media="handheld, only screen and (max-width: 767px)" />
     <link rel="stylesheet" href="<?php echo CSS_DIR; ?>layout.css" type="text/css" media="screen" /-->
 
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Averia+Serif+Libre' rel='stylesheet' type='text/css'>
+
     <!-- jQuery/Scripts-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo JS_DIR; ?>scripts.php"></script>
@@ -32,7 +36,7 @@
     <div class="row">
         <div class="eightcol">
             <a href="/" id="sitelogo"></a>
-            <a href="/" id="">Socialrouter</a>
+            <a href="/" id="siteheader">Socialrouter</a>
                 <?php //echo $_SERVER['HTTP_HOST']; ?>
                 <?php //echo $_SERVER['REQUEST_URI']; ?>
         </div>

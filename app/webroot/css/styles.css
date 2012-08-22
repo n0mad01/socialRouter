@@ -85,10 +85,20 @@ padding:20px 0;
 }
 .header #sitelogo {
 float:left;
-margin:12px 14px 0 0;
-width:70px;
-height:45px;
-background:url("/app/webroot/images/spaceinvader.png") no-repeat scroll 0 0;/* green*/
+/*margin:12px 14px 0 0;*/
+margin:0 20px 0 0;
+width:88px;
+height:88px;
+background:url("/app/webroot/images/invader.png") no-repeat scroll 0 0;/* green*/
+/*width:70px;*/
+/*height:45px;*/
+/*background:url("/app/webroot/images/spaceinvader.png") no-repeat scroll 0 0;*//* green*/
+}
+.header #siteheader {
+disaply:block;
+margin-top:29px;
+font-family: 'Averia Serif Libre', cursive;
+fint-size:26px;
 }
 /*.header h1 {
 float:left;
