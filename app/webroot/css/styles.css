@@ -95,30 +95,20 @@ background:url("/app/webroot/images/invader.png") no-repeat scroll 0 0;/* green*
 /*background:url("/app/webroot/images/spaceinvader.png") no-repeat scroll 0 0;*//* green*/
 }
 .header #siteheader {
-disaply:block;
+display:block;
 margin-top:29px;
-font-family: 'Averia Serif Libre', cursive;
-fint-size:26px;
+font-family:'Averia Serif Libre', cursive;
+font-size:26px;
+color:#2C413D;
 }
-/*.header h1 {
-float:left;
-position:relative;
-top:8px;
-left:0px;
-color:#383d4e;
-font-family:'Coda',arial,serif;
-font-size:24px;
-text-shadow:1px 1px 0px #98a0bf;
-}
-.header span#signature {
-float:left;
-position:relative;
-top:38px;
-left:-80px;
-}*/
+    .header .input label {
+    display:block;
+    float:left;
+    width:100px;
+    }
 
 /* HEADER - ACCOUNT - ACCOUNTBOX */
-#accountBox {
+/*#accountBox {
 margin:2px;
 padding:7px;
 background-color:#3A4B64;
@@ -151,7 +141,7 @@ display:block;
 float:left;
 font-size:11px;
 margin:0 10px 0 0;
-}
+}*/
 /* MAINMENU */
 .mainMenu {
 }
@@ -219,6 +209,38 @@ background-color:#CCE4FF;
 border:1px solid #A9B8C9;
 margin-top:-1px;
 }
+
+.bookmarksToolbar {
+display:block;
+margin:30px 0;
+padding:15px;
+border:1px dashed #DAEFE2;
+background-color:#FCFFFD;
+}
+    .bookmarksToolbar span {
+    /*display:block;    */
+    /*float:left;*/
+    }
+    .bookmarksToolbar a {
+    /*display:block;    */
+    /*float:left;*/
+    margin:0 0 0 10px;
+    padding:10px;
+    border:1px solid #BAE1C8;
+    background-color:#FFF;
+    }
+
+.registerForm {
+margin:15px 0;
+}
+    .registerForm label {
+    diplay:block;
+    float:left;
+    width:125px;
+    }
+    .registerForm label#termsOfUse {
+    width:200px;
+    }
 
 /* FOOTER */
 .footer {

@@ -20,8 +20,10 @@
                     echo '<img alt="" src="' . $service['image'] . '" />';
                 endforeach;
             else :
-                    echo '<p>';
-                        echo 'drag this to your bookmarks or bookmarks toolbar:';
+                    echo '<p class="bookmarksToolbar">';
+                        echo '<span>';
+                            echo 'drag this to your bookmarks or bookmarks toolbar:';
+                        echo '</span>';
                         require('app/views/helpers/bookmark.php');
                     echo '</p>';
             endif;
@@ -33,7 +35,7 @@
 
                 require('app/views/helpers/registration.php');
             else :
-                echo '<p>';
+                echo '<p class="bookmarksToolbar">';
                     echo 'drag this to your bookmarks or bookmarks toolbar:';
                     require('app/views/helpers/bookmark.php');
                 echo '</p>';

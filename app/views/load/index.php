@@ -47,7 +47,7 @@ var socialrouter = (function(){
         //content = textarea.value;
 
         if( textarea ) {
-            textarea.value = document.title + "\n" + textarea.value; //content //document.location.href;
+            textarea.value = document.title + "\n" + textarea.value.replace(/ /g,''); //content //document.location.href;
             charCountSR();
         }
 

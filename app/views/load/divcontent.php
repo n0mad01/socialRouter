@@ -57,7 +57,7 @@ HTMLSTUFF;
         if(isset($_SESSION['__sessiondata']['email'])) :
             $mail = '<span style="font-size:10px;">';
                 $mail .= $_SESSION['__sessiondata']['email'];
-            $mail .= '<span>';
+            $mail .= '</span>';
         endif;
 
         $twitterUserForm = '';
@@ -94,12 +94,13 @@ HTMLSTUFF;
     <div style="float:right;">chars used: <span id="sr_charCount" style="color:#D94432;font-weight:bold;"></span></div>
     <hr />
         <!--input id="twitteruser" type="text" maxlength="30" name="postdata[twitteruser]" value="php_live" /-->
-        <a href="http://sr2.soluch.at/twitter/add/">add twitter account</a><br />
+        <a href="http://sr2.soluch.at/twitter/add/" target="_blank" >add a twitter account</a><br />
     
         $twitterUserForm
     
         <br />
-    	<input type="submit" value="Submit" id="submitSocial" />
+        <hr />
+    	<input type="submit" value="Route" id="submitSocial" />
     </form>
     
     
@@ -126,7 +127,7 @@ $css
 <span style="margin-left:22px;">SocialRouter</span>
 </a>
 <span style="float:left;margin:6px 0 0 3px;font-size:7px;color:#697176;">v0.6.5</span>
-<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;border-bottom:1px dotted #754741;"></div>
+<div style="clear:both;width:100%;height:1px;margin:9px 0 2px 0;/*border-bottom:1px dotted #754741;*/"></div>
 $mail
 <div id="sr_closeButton" class="sr_topButtons" >close x</div>
 HTMLSTUFF;
@@ -180,7 +181,7 @@ width:300px;
 padding:5px 14px;
 background-color:#FFF;
 /*background:url("data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAANCAMAAACTkM4rAAAAM1BMVEXy8vLz8/P5+fn19fXt7e329vb4+Pj09PTv7+/u7u739/fw8PD7+/vx8fHr6+v6+vrs7Oz2LjW2AAAAkUlEQVR42g3KyXHAQAwDQYAQj12ItvOP1qqZZwMMPVnd06XToQvz4L2HDQ2iRgkvA7yPPB+JD+OUPnfzZ0JNZh6kkQus5NUmR7g4Jpxv5XN6nYWNmtlq9o3zuK6w3XRsE1pQIEGPIsdtTP3m2cYwlPv6MbL8/QASsKppZefyDmJPbxvxa/NrX1TJ1yp20fhj9D+SiAWWLU8myQAAAABJRU5ErkJggg==") repeat;*/
-border:1px solid #B0BFC9;
+border:1px solid #235E52;
 -webkit-border-radius:5px;
 -moz-border-radius:5px;
 border-radius:5px;
@@ -190,7 +191,7 @@ box-shadow:0px 0px 3px 0px $boxShadow, 0 0 5px $boxShadowInset inset;
 font-family:arial;
 font-size:12px;
 text-align:left;
-color:#000;
+color:#15302A;
 zoom:1;
 }
 
@@ -203,10 +204,10 @@ color:#000;
 #socialrouterMaindiv textarea {
 clear:both;
 width:295px;
-height:70px;
+height:90px;
 margin:0 0 5px 0;
 padding:3px;
-border:1px solid #BDBDBD;
+border:1px solid #607E78;
 resize:none;
 font-size:12px;
 font-family:arial;
@@ -222,7 +223,7 @@ float:left;
 top:8px;
 left:15px;*/
 margin:1px 0 2px 0;
-color:#A44135;
+color:#2C413D;
 font-size:13px;
 font-weight:bold;
 }
@@ -253,6 +254,9 @@ color:#FFF;
 cursor:pointer;cursor:hand;
 }
 
+#socialrouterMaindiv hr {
+border:1px dashed #BACDC9;
+}
 </style>
 CSS;
 

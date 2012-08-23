@@ -50,7 +50,7 @@
                                     echo '<div class="errormsg">' . $this->errorMsg['invalid']['notfound'] . '</div>';
                             } ?>
                             <div class="input">
-                                <label for="email"><?php echo _('username or email'); ?>:</label>
+                                <label for="email"><?php echo _('Email'); ?>:</label>
                                 <input id="email" type="text" maxlength="30" name="postdata[email]" 
                                 <?php echo ' value="' . $this->postdata['email'] . '"'; ?> />
                             </div>
