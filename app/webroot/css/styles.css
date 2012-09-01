@@ -78,10 +78,9 @@ color:#D66767;
 /* HEADER */
 .header {
 /*height:70px;*/
-/*background:url("/app/webroot/images/headerbg.jpg") repeat scroll center top #E5EDF8;*/
-/*background-color:#D1E751;*/
-background-color:#85CC9F;
-padding:20px 0;
+/*background-color:#85CC9F;*/
+background-color:#151515;
+/*padding:20px 0;*/
 }
 .header #sitelogo {
 float:left;
@@ -96,10 +95,10 @@ background:url("/app/webroot/images/invader.png") no-repeat scroll 0 0;/* green*
 }
 .header #siteheader {
 display:block;
-margin-top:29px;
+margin-top:11px;
 font-family:'Averia Serif Libre', cursive;
 font-size:26px;
-color:#2C413D;
+color:#F1F1F1;
 }
     .header .input label {
     display:block;
@@ -108,40 +107,35 @@ color:#2C413D;
     }
 
 /* HEADER - ACCOUNT - ACCOUNTBOX */
-/*#accountBox {
-margin:2px;
-padding:7px;
-background-color:#3A4B64;
+#loginbox {
+display:none;
+position:absolute;
+padding:12px 32px 20px 32px;
+background-color:#151515;
+-webkit-border-radius: 0px 0px 5px 5px;
+border-radius: 0px 0px 5px 5px; 
 color:#FFF;
--moz-border-radius:3px;
--webkit-border-radius:3px;
--khtml-border-radius:3px;
-border-radius:3px;
 }
-#accountBox div.imgBox {
-float:left;
-height:20px;
-padding:1px;
-margin-right:6px;
-border:1px solid #647690;
-background-color:#DFE9F8;
-}
-#accountBox img {
-width:20px;
-}
-#accountBox p {
-margin:0;
-}
-#accountBox #accountInfo {
-padding:5px;
-color:#DFE9F8;
-}
-#accountBox #accountInfo p {
+#loginbox_opener {
 display:block;
-float:left;
-font-size:11px;
-margin:0 10px 0 0;
-}*/
+margin:8px 0;
+padding:3px;
+/*border:1px solid black;*/
+background-color:#333333;
+text-align:center;
+color:#FFF;
+text-shadow:0 1px #151515;
+}
+    #loginbox_opener:hover {
+    background-color:#2B2B2B;
+    color:#FFD11D;
+    }
+    /*#loginbox_opener .arrow {
+    width:8px;
+    height:4px;
+    background:url(data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOUlEQVQY02Nwc3P7X1paihWD5BhAAJsiuCQMICvCkERWhCF5//79/7gASA6nIrgkNpMwJJEVoUsCABu/d6ETRU67AAAAAElFTkSuQmCC) no-repeat;
+    }*/
+
 /* MAINMENU */
 .mainMenu {
 }
@@ -168,6 +162,18 @@ background-color:#940000;
     }
 
 /* CONTENT - ACCOUNT - TABS */ 
+
+.headline {
+margin:45px 0 40px 0;
+/*font-family:helvetica,arial,sans-serif;*/
+font-family:opensans,helvetica,arial,sans-serif;
+font-weight:bold;
+font-size:50px;
+letter-spacing:-2px;
+color:#EF4F13;
+/*line-height:50pt;*/
+}
+
 .account {
 margin-top:-30px;
 }
@@ -245,7 +251,8 @@ margin:15px 0;
 /* FOOTER */
 .footer {
 height:250px;
-background-color:#499E8D;
+/*background-color:#499E8D;*/
+background-color:#85CC9F;
 color:#FBFBFB;
 }
 
@@ -281,22 +288,22 @@ h1 {
 font-size: 30px;
 line-height: 36px;		/* Changing this will break the baseline grid. */
 margin-bottom: 24px;	/* Changing this will break the baseline grid. */
-font-family: Georgia;
-font-weight: lighter;
+/*font-family: Georgia;*/
+/*font-weight: lighter;*/
 }
 
 h2 {
 font-size: 20px;
 margin-bottom: 24px;	/* Changing this will break the baseline grid. */
-font-family: Georgia, serif;
-font-weight: lighter;
+/*font-family: Georgia, serif;*/
+/*font-weight: lighter;*/
 }
 
 h3 {
 font-size: 16px;
 margin-bottom: 24px;	/* Changing this will break the baseline grid. */
-font-family: Georgia, serif;
-font-weight: lighter;
+/*font-family: Georgia, serif;*/
+/*font-weight: lighter;*/
 }
 
 /* ============================= */

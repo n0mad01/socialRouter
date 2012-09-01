@@ -35,36 +35,43 @@
 <div class="container header">
     <div class="row">
         <div class="eightcol">
-            <a href="/" id="sitelogo"></a>
+            <!--a href="/" id="sitelogo"></a-->
             <a href="/" id="siteheader">Socialrouter</a>
-                <?php //echo $_SERVER['HTTP_HOST']; ?>
-                <?php //echo $_SERVER['REQUEST_URI']; ?>
         </div>
         <div class="fourcol last">
             <!-- SIGN IN -->
-            <?php 
+<?php 
                 if($_GET['path'] !== 'users/register' ) :
-                    if(!$this->isAuth()) : ?>
-                        <form id="login" accept-charset="utf-8" action="/users/login" method="post">
-                            <?php if (isset($this->errorMsg['invalid']['notfound'])) {
+                    if( ! $this->isAuth() ) :
+?>
+                        <a href="/users/login" alt="login-box" id="loginbox_opener">
+                            login
+                            <!--div class="arrow"></div-->
+                        </a>
+                        <div id="loginbox">
+                            <form id="login" accept-charset="utf-8" action="/users/login" method="post">
+<?php 
+                                if (isset($this->errorMsg['invalid']['notfound'])) :
                                     echo '<div class="errormsg">' . $this->errorMsg['invalid']['notfound'] . '</div>';
-                            } ?>
-                            <div class="input">
-                                <label for="email"><?php echo _('Email'); ?>:</label>
-                                <input id="email" type="text" maxlength="30" name="postdata[email]" 
-                                <?php echo ' value="' . $this->postdata['email'] . '"'; ?> />
-                            </div>
-                            <div class="input">
-                                <label for="password"><?php echo _('Password'); ?>:</label>
-                                <input id="password" type="password" name="postdata[password]" />
-                            </div>
-                            <!--div class="checkbox">
-                                <label for="stayLoggedIn"><?php echo _('stay logged in'); ?>:</label>
-                                <input id="stayLoggedIn" type="checkbox" name="postdata[stayLoggedIn]" checked="checked" disabled="disabled"/>
-                                <?php echo '<span style="font-size:10px;">' . _('(until the end of time)') . '</span>'; ?>
-                            </div-->
-                            <input type="submit" value="<?php echo _('sign in'); ?>"/>
-                        </form>
+                                endif; 
+?>
+                                <div class="input">
+                                    <label for="email"><?php echo _('Email'); ?>:</label>
+                                    <input id="email" type="text" maxlength="30" name="postdata[email]" 
+                                    <?php echo ' value="' . $this->postdata['email'] . '"'; ?> />
+                                </div>
+                                <div class="input">
+                                    <label for="password"><?php echo _('Password'); ?>:</label>
+                                    <input id="password" type="password" name="postdata[password]" />
+                                </div>
+                                <!--div class="checkbox">
+                                    <label for="stayLoggedIn"><?php echo _('stay logged in'); ?>:</label>
+                                    <input id="stayLoggedIn" type="checkbox" name="postdata[stayLoggedIn]" checked="checked" disabled="disabled"/>
+                                    <?php echo '<span style="font-size:10px;">' . _('(until the end of time)') . '</span>'; ?>
+                                </div-->
+                                <input type="submit" value="<?php echo _('sign in'); ?>"/>
+                            </form>
+                        </div>
                     <?php 
                     else:
                         echo '<a href="/users/home/">' . $_SESSION['__sessiondata']['email'] . '</a> ';

@@ -16,8 +16,15 @@ jQuery(document).ready(function(){
 	jQuery('#removeTwitterAccounts input').click(function(e){
 		if (!confirm('<?php echo _('Do you really want to remove\n'); ?>'+' '+jQuery('#removeTwitterAccount').val()+'?')) { e.preventDefault(); }
 		//alert(jQuery('#removeTwitterAccount').val());
-	}); 
+	});
 
+	jQuery('#loginbox_opener').toggle(function( event ){
+        jQuery('#loginbox').fadeIn();
+        if ( event.preventDefault ) event.preventDefault(); event.returnValue = false;
+    }, function() {
+        jQuery('#loginbox').fadeOut();
+        if ( event.preventDefault ) event.preventDefault(); event.returnValue = false;
+    });
 });
 
 // ARRAY DUMPER

@@ -20,6 +20,10 @@
                     echo '<img alt="" src="' . $service['image'] . '" />';
                 endforeach;
             else :
+                    echo '<div class="headline">';
+                        echo '<h1>distributing social content from anywhere</h1>';
+                    echo '</div>';
+
                     echo '<p class="bookmarksToolbar">';
                         echo '<span>';
                             echo 'drag this to your bookmarks or bookmarks toolbar:';
